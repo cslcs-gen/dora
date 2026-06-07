@@ -233,12 +233,12 @@ const STAGE_CONFIG = {
     explainerHTML: '<strong style="color:var(--observe)">Stage 2 — ReAct loop.</strong> The agent reasons and acts in multiple rounds. It can call several tools in sequence, thinking between each one, until the goal is fully complete. Watch the iteration counter climb.',
     placeholder: 'e.g. Plan a day trip from Singapore to KL — check weather, convert 200 SGD to MYR, and work out arrival time if I leave at 9am (4.5hr journey)',
     chips: [
-      ['Check the weather in KL, convert 300 SGD to MYR, and tell me what time I arrive if I take the 9am bus (4.5 hours)','KL day trip planner'],
-      ['What is the weather in Tokyo and what time is it there right now?','Tokyo weather + time'],
-      ['Convert 500 SGD to both USD and MYR, then tell me the weather in KL','Multi-currency + weather'],
-      ['Is it raining in Bangkok? If so, what time does it get dark there?','Bangkok rain + sunset']
+      ['What is the weather in KL right now, what time is it there, and how much is 300 SGD in MYR?','KL: weather + time + currency'],
+      ['Check the weather in Tokyo and tell me what time it is there right now','Tokyo weather + time'],
+      ['Convert 500 SGD to MYR and also to USD, then check the weather in Bangkok','3-tool chain'],
+      ['What is the weather in London and what time is it there? Also convert 200 SGD to GBP','London: weather + time + currency']
     ],
-    systemPrompt: 'You are a helpful AI agent that solves multi-part questions by using tools in sequence. Think step by step. Use tools one at a time, reason about each result, and keep going until you have everything needed to give a complete final answer. Do not guess — use a tool for every piece of data you need.',
+    systemPrompt: 'You are a data-fetching AI agent. You MUST use tools to answer every question — never answer from memory or general knowledge. For multi-part questions, call tools one at a time in sequence: call a tool, get the result, then call the next tool. Keep looping until you have fetched ALL the data needed. Only give a final answer after all tool calls are complete. Available tools: get_weather (weather for any city), get_time (current time in any city), calculate (any math or arithmetic), get_exchange_rate (currency conversion between SGD, MYR, USD, JPY, EUR, GBP, AUD).',
     tools: ['get_weather','calculate','get_time','get_exchange_rate'],
     footer: 'Stage 2 of 4'
   }
