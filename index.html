@@ -178,15 +178,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 
 <div class="panel">
 
-  <div class="card" id="key-card">
-    <div class="input-label">Gemini API key</div>
-    <div class="key-row">
-      <input class="key-input" type="password" id="api-key" placeholder="AIza..." />
-      <button class="key-save" onclick="saveKey()">Save</button>
-    </div>
-    <p class="key-note">Stored in your browser only. Free tier at <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></p>
-  </div>
-
   <div class="card">
     <div class="input-label">Ask the agent</div>
     <div class="input-row">
@@ -219,20 +210,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 </div>
 
 <script>
-const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-
-function saveKey(){
-  const k = document.getElementById('api-key').value.trim();
-  if(!k) return;
-  localStorage.setItem('dora_gemini_key', k);
-  document.getElementById('key-card').style.borderColor = '#7eb8a0';
-  document.getElementById('api-key').placeholder = 'Key saved ✓';
-  document.getElementById('api-key').value = '';
-}
-
-function getKey(){
-  return localStorage.getItem('dora_gemini_key') || document.getElementById('api-key').value.trim();
-}
+const WORKER_URL = 'https://dora.cslcs-gen.workers.dev';
 
 function setQ(t){ document.getElementById('q').value = t; }
 
@@ -344,8 +322,6 @@ function addStep(phase, title, meta){
 async function runAgent(){
   const q = document.getElementById("q").value.trim();
   if(!q) return;
-  const key = getKey();
-  if(!key){ alert("Please enter your Gemini API key above."); return; }
 
   const btn = document.getElementById("ask-btn");
   btn.disabled = true; btn.textContent = "Running…";
@@ -354,7 +330,7 @@ async function runAgent(){
   document.getElementById("trace-card").style.display = "block";
   document.getElementById("answer-card").style.display = "none";
 
-  addStep("decide","Deciding which tool to use…","→ sending question + tool definitions to Gemini");
+  addStep("decide","Deciding which tool to use…","→ sending question + tool definitions to Gemini via Worker");
 
   const contents = [{ role:"user", parts:[{text: q}] }];
 
@@ -363,7 +339,7 @@ async function runAgent(){
     while(iterations < 6){
       iterations++;
 
-      const res = await fetch(`${GEMINI_ENDPOINT}?key=${key}`,{
+      const res = await fetch(WORKER_URL,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify({
@@ -422,8 +398,6 @@ async function runAgent(){
 
 document.getElementById("q").addEventListener("keydown", e=>{ if(e.key==="Enter") runAgent(); });
 
-const saved = localStorage.getItem('dora_gemini_key');
-if(saved){ document.getElementById('api-key').placeholder = 'Key saved — ready to use'; document.getElementById('key-card').style.borderColor='#7eb8a0'; }
 </script>
 </body>
 </html>
