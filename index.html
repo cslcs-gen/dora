@@ -3,83 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>DORA — Decide · Observe · Reason · Act</title>
 <meta name="description" content="Learn agentic AI hands-on. Watch an AI agent decide, observe, reason, and act in real time across 4 progressive stages.">
-<meta name="keywords" content="agentic AI, AI agent, tool use, ReAct, multi-agent, learn AI">
-<meta name="author" content="buildjoynow.com">
-
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dora.buildjoynow.com">
 <meta property="og:title" content="DORA — Decide · Observe · Reason · Act">
 <meta property="og:description" content="Learn agentic AI hands-on. Watch an AI agent decide, observe, reason, and act in real time.">
 <meta property="og:image" content="https://dora.buildjoynow.com/og.png">
-
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DORA — Decide · Observe · Reason · Act">
-<meta name="twitter:description" content="Learn agentic AI hands-on. Watch the agent loop live.">
 <meta name="twitter:image" content="https://dora.buildjoynow.com/og.png">
-
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230f0f0f'/><text x='32' y='44' font-family='serif' font-size='32' font-weight='700' fill='white' text-anchor='middle'>D</text></svg>">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0a0a;
-  --surface:#111111;
-  --surface2:#1a1a1a;
-  --border:#2a2a2a;
-  --text:#f0ede8;
-  --muted:#9a9690;
-  --accent:#e8d5a3;
-  --accent2:#a3c4e8;
-  --decide:#c9a96e;
-  --observe:#7eb8a0;
-  --reason:#a08ec9;
-  --act:#c97e7e;
-  --font-display:'DM Serif Display',serif;
-  --font-body:'Outfit',sans-serif;
-  --font-mono:'DM Mono',monospace;
+  --bg:#0a0a0a;--surface:#111111;--surface2:#1a1a1a;--border:#2a2a2a;
+  --text:#f0ede8;--muted:#9a9690;--accent:#e8d5a3;
+  --decide:#c9a96e;--observe:#7eb8a0;--reason:#a08ec9;--act:#c97e7e;
+  --font-display:'DM Serif Display',serif;--font-body:'Outfit',sans-serif;--font-mono:'DM Mono',monospace;
 }
-
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:400;line-height:1.6;min-height:100vh}
 
 /* hero */
-.hero{padding:3rem 1.5rem 2rem;max-width:680px;margin:0 auto;text-align:center}
-.logo-wrap{display:flex;justify-content:center;margin-bottom:2rem}
-.logo-svg{width:72px;height:72px}
-.hero-title{font-family:var(--font-display);font-size:clamp(2.8rem,8vw,4.5rem);line-height:1;letter-spacing:-.02em;margin-bottom:.75rem;color:var(--text)}
+.hero{padding:2.5rem 1.5rem 1.5rem;max-width:680px;margin:0 auto;text-align:center}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:1.5rem}
+.logo-svg{width:64px;height:64px}
+.hero-title{font-family:var(--font-display);font-size:clamp(2.4rem,7vw,3.8rem);line-height:1;letter-spacing:-.02em;margin-bottom:.6rem}
 .hero-title em{font-style:italic;color:var(--accent)}
-.acronym-row{display:flex;justify-content:center;gap:clamp(12px,3vw,28px);margin:1.5rem 0 1rem}
-.letter-pill{display:flex;flex-direction:column;align-items:center;gap:5px}
-.letter-char{font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;width:clamp(44px,9vw,60px);height:clamp(44px,9vw,60px);border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid}
+.acronym-row{display:flex;justify-content:center;gap:clamp(10px,3vw,24px);margin:1.2rem 0 .8rem}
+.letter-pill{display:flex;flex-direction:column;align-items:center;gap:4px}
+.letter-char{font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2rem);font-weight:700;width:clamp(40px,9vw,56px);height:clamp(40px,9vw,56px);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid}
 .letter-char.d{background:rgba(201,169,110,.12);color:var(--decide);border-color:rgba(201,169,110,.25)}
 .letter-char.o{background:rgba(126,184,160,.12);color:var(--observe);border-color:rgba(126,184,160,.25)}
 .letter-char.r{background:rgba(160,142,201,.12);color:var(--reason);border-color:rgba(160,142,201,.25)}
 .letter-char.a{background:rgba(201,126,126,.12);color:var(--act);border-color:rgba(201,126,126,.25)}
 .letter-word{font-size:clamp(9px,2vw,11px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-weight:500}
-.hero-sub{font-size:clamp(13px,3vw,15px);color:#b8b4ae;max-width:420px;margin:0 auto 2rem}
+.hero-sub{font-size:clamp(13px,3vw,15px);color:#b8b4ae;max-width:420px;margin:0 auto 1.5rem}
 
-/* stage badge */
-.stage-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:4px 12px 4px 6px;font-size:12px;color:var(--muted);margin-bottom:2rem}
-.stage-dot{width:8px;height:8px;border-radius:50%;background:var(--observe)}
+/* stage tabs */
+.stage-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
+.stage-tab{padding:6px 16px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:var(--font-body)}
+.stage-tab:hover{border-color:var(--muted)}
+.stage-tab.active{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
+.stage-tab.locked{opacity:.35;cursor:not-allowed}
 
-/* main panel */
+/* stage explainer */
+.explainer{background:var(--surface2);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#b8b4ae;line-height:1.6;border-left:3px solid}
+.explainer.s1{border-color:var(--decide)}
+.explainer.s2{border-color:var(--observe)}
+
+/* panel */
 .panel{max-width:680px;margin:0 auto;padding:0 1rem 4rem}
-
 .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:12px}
 
-/* input area */
+/* input */
 .input-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
 .input-row{display:flex;gap:8px}
 .input-row input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
 .input-row input:focus{border-color:var(--accent)}
-.input-row input::placeholder{color:#8a8680}
+.input-row input::placeholder{color:#6a6660}
 .ask-btn{background:var(--accent);color:#0a0a0a;border:none;border-radius:10px;padding:10px 18px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity .2s}
 .ask-btn:hover{opacity:.85}
 .ask-btn:disabled{opacity:.35;cursor:not-allowed}
@@ -90,7 +76,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .chip:hover{border-color:var(--accent);color:var(--accent)}
 
 /* trace */
-.trace-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px}
+.trace-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.iter-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface2);color:var(--muted);font-family:var(--font-mono);border:1px solid var(--border)}
 .step{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .step:last-child{border-bottom:none}
 .step-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;font-family:var(--font-mono)}
@@ -102,27 +89,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .step-title{font-size:13px;color:#e0ddd8;line-height:1.5}
 .step-meta{font-size:11px;color:#8a8680;font-family:var(--font-mono);margin-top:2px;word-break:break-all}
 
-/* answer */
-.answer-box{background:var(--surface2);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text);border-left:3px solid var(--observe)}
+/* loop separator */
+.loop-sep{display:flex;align-items:center;gap:8px;padding:6px 0;margin:2px 0}
+.loop-line{flex:1;height:1px;background:var(--border)}
+.loop-label{font-size:10px;color:var(--muted);font-family:var(--font-mono);white-space:nowrap}
 
-/* key section */
-.key-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.key-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:var(--font-mono);font-size:13px;color:var(--text);outline:none}
-.key-input:focus{border-color:var(--accent)}
-.key-save{background:transparent;border:1px solid var(--border);border-radius:10px;padding:9px 14px;color:var(--muted);font-size:13px;cursor:pointer;white-space:nowrap;transition:border-color .2s,color .2s}
-.key-save:hover{border-color:var(--accent);color:var(--accent)}
-.key-note{font-size:11px;color:#8a8680}
-.key-note a{color:var(--accent);text-decoration:none}
+/* answer */
+.answer-box{background:var(--surface2);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.8;color:var(--text);border-left:3px solid var(--observe)}
+
+/* stats row */
+.stats-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.stat{background:var(--surface2);border-radius:8px;padding:6px 12px;font-size:12px;font-family:var(--font-mono);color:var(--muted)}
+.stat span{color:var(--text)}
 
 /* footer */
 .footer{text-align:center;font-size:12px;color:var(--muted);padding:2rem;border-top:1px solid var(--border)}
-.footer span{color:var(--accent)}
+.footer em{color:var(--accent);font-style:normal}
 
-/* animation */
+/* animations */
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease forwards}
-
-/* pulse dot */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .pulse{animation:pulse 1.2s ease infinite}
 </style>
@@ -131,60 +117,65 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 
 <div class="hero">
   <div class="logo-wrap">
-    <svg class="logo-svg" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="72" height="72" rx="18" fill="#111111" stroke="#2a2a2a" stroke-width="1"/>
-      <circle cx="36" cy="36" r="20" stroke="#2a2a2a" stroke-width="1" stroke-dasharray="3 3"/>
-      <circle cx="36" cy="16" r="5" fill="rgba(201,169,110,0.2)" stroke="#c9a96e" stroke-width="1.5"/>
-      <text x="36" y="20" font-family="serif" font-size="7" fill="#c9a96e" text-anchor="middle" font-weight="700">D</text>
-      <circle cx="56" cy="36" r="5" fill="rgba(126,184,160,0.2)" stroke="#7eb8a0" stroke-width="1.5"/>
-      <text x="56" y="40" font-family="serif" font-size="7" fill="#7eb8a0" text-anchor="middle" font-weight="700">O</text>
-      <circle cx="36" cy="56" r="5" fill="rgba(160,142,201,0.2)" stroke="#a08ec9" stroke-width="1.5"/>
-      <text x="36" y="60" font-family="serif" font-size="7" fill="#a08ec9" text-anchor="middle" font-weight="700">R</text>
-      <circle cx="16" cy="36" r="5" fill="rgba(201,126,126,0.2)" stroke="#c97e7e" stroke-width="1.5"/>
-      <text x="16" y="40" font-family="serif" font-size="7" fill="#c97e7e" text-anchor="middle" font-weight="700">A</text>
-      <path d="M36 21 L51 31 M51 41 L41 51 M31 51 L21 41 M21 31 L31 21" stroke="#2a2a2a" stroke-width="1"/>
-      <circle cx="36" cy="36" r="4" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
-      <circle cx="36" cy="36" r="1.5" fill="#e8d5a3"/>
+    <svg class="logo-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="120" height="120" rx="26" fill="#0e0e0e"/>
+      <circle cx="60" cy="60" r="40" stroke="#1e1e1e" stroke-width="1"/>
+      <circle cx="60" cy="60" r="28" stroke="#181818" stroke-width="0.5" stroke-dasharray="2 3"/>
+      <path d="M60 20 A40 40 0 0 1 100 60" stroke="#c9a96e" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <path d="M100 60 A40 40 0 0 1 60 100" stroke="#7eb8a0" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <path d="M60 100 A40 40 0 0 1 20 60" stroke="#a08ec9" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <path d="M20 60 A40 40 0 0 1 60 20" stroke="#c97e7e" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <polygon points="97,52 100,60 93,58" fill="#7eb8a0" opacity="0.9"/>
+      <polygon points="68,97 60,100 62,93" fill="#a08ec9" opacity="0.9"/>
+      <polygon points="23,68 20,60 27,62" fill="#c97e7e" opacity="0.9"/>
+      <polygon points="52,23 60,20 58,27" fill="#c9a96e" opacity="0.9"/>
+      <circle cx="60" cy="20" r="12" fill="#120e00" stroke="#c9a96e" stroke-width="1.2"/>
+      <text x="60" y="24.5" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#c9a96e" text-anchor="middle">D</text>
+      <circle cx="100" cy="60" r="12" fill="#001209" stroke="#7eb8a0" stroke-width="1.2"/>
+      <text x="100" y="64.5" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#7eb8a0" text-anchor="middle">O</text>
+      <circle cx="60" cy="100" r="12" fill="#0d0012" stroke="#a08ec9" stroke-width="1.2"/>
+      <text x="60" y="104.5" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#a08ec9" text-anchor="middle">R</text>
+      <circle cx="20" cy="60" r="12" fill="#120000" stroke="#c97e7e" stroke-width="1.2"/>
+      <text x="20" y="64.5" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#c97e7e" text-anchor="middle">A</text>
+      <circle cx="60" cy="60" r="6" fill="#0f0f0f" stroke="#2a2a2a" stroke-width="1"/>
+      <circle cx="60" cy="60" r="2.5" fill="#e8d5a3"/>
     </svg>
   </div>
 
   <div class="acronym-row">
-    <div class="letter-pill">
-      <div class="letter-char d">D</div>
-      <div class="letter-word">Decide</div>
-    </div>
-    <div class="letter-pill">
-      <div class="letter-char o">O</div>
-      <div class="letter-word">Observe</div>
-    </div>
-    <div class="letter-pill">
-      <div class="letter-char r">R</div>
-      <div class="letter-word">Reason</div>
-    </div>
-    <div class="letter-pill">
-      <div class="letter-char a">A</div>
-      <div class="letter-word">Act</div>
-    </div>
+    <div class="letter-pill"><div class="letter-char d">D</div><div class="letter-word">Decide</div></div>
+    <div class="letter-pill"><div class="letter-char o">O</div><div class="letter-word">Observe</div></div>
+    <div class="letter-pill"><div class="letter-char r">R</div><div class="letter-word">Reason</div></div>
+    <div class="letter-pill"><div class="letter-char a">A</div><div class="letter-word">Act</div></div>
   </div>
 
   <h1 class="hero-title">Learn <em>agentic</em> AI</h1>
-  <p class="hero-sub">Watch a real AI agent decide what to do, observe results, reason through them, and act — step by step, in real time.</p>
+  <p class="hero-sub">Watch a real AI agent loop through decisions, tools, and results — step by step, in real time.</p>
 
-  <div class="stage-badge">
-    <div class="stage-dot pulse"></div>
-    Stage 1 · Single tool use
+  <div class="stage-tabs">
+    <button class="stage-tab active" id="tab-1" onclick="switchStage(1)">Stage 1 · Single tool</button>
+    <button class="stage-tab" id="tab-2" onclick="switchStage(2)">Stage 2 · ReAct loop</button>
+    <button class="stage-tab locked" title="Coming soon">Stage 3 · Memory</button>
+    <button class="stage-tab locked" title="Coming soon">Stage 4 · Multi-agent</button>
   </div>
 </div>
 
 <div class="panel">
 
+  <!-- Stage explainer -->
+  <div class="explainer s1" id="explainer">
+    <strong style="color:var(--decide)">Stage 1 — Single tool use.</strong>
+    The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.
+  </div>
+
+  <!-- Ask card -->
   <div class="card">
-    <div class="input-label">Ask the agent</div>
+    <div class="input-label" id="ask-label">Ask the agent</div>
     <div class="input-row">
       <input type="text" id="q" placeholder="e.g. What is the weather in Singapore?" />
       <button class="ask-btn" id="ask-btn" onclick="runAgent()">Ask</button>
     </div>
-    <div class="chips">
+    <div class="chips" id="chips">
       <span class="chip" onclick="setQ('What is the weather in Tokyo?')">Tokyo weather</span>
       <span class="chip" onclick="setQ('What is 1284 divided by 36?')">Calculator</span>
       <span class="chip" onclick="setQ('What time is it in London right now?')">London time</span>
@@ -193,72 +184,113 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
     </div>
   </div>
 
+  <!-- Trace card -->
   <div class="card fade-in" id="trace-card" style="display:none">
-    <div class="trace-label">Agent trace — the DORA loop</div>
+    <div class="trace-label">
+      Agent trace — the DORA loop
+      <span class="iter-badge" id="iter-count"></span>
+    </div>
     <div id="log"></div>
   </div>
 
+  <!-- Answer card -->
   <div class="card fade-in" id="answer-card" style="display:none">
     <div class="trace-label">Final answer</div>
     <div class="answer-box" id="answer"></div>
+    <div class="stats-row" id="stats-row"></div>
   </div>
 
 </div>
 
 <div class="footer">
-  built by <span>buildjoynow.com</span> · DORA v1.0 · Stage 1 of 4
+  built by <em>buildjoynow.com</em> · DORA v2.0 · <span id="footer-stage">Stage 1 of 4</span>
 </div>
 
 <script>
 const WORKER_URL = 'https://dora.cslcs-gen.workers.dev';
+let currentStage = 1;
+let iterationCount = 0;
 
-function setQ(t){ document.getElementById('q').value = t; }
-
-const TOOLS_DEF = {
-  function_declarations: [
-    {
-      name: "get_weather",
-      description: "Get current weather for a city. Returns temperature, conditions, humidity, wind.",
-      parameters: {
-        type: "object",
-        properties: {
-          city: { type: "string", description: "City name e.g. Tokyo" },
-          units: { type: "string", enum: ["celsius","fahrenheit"], description: "Temperature unit, default celsius" }
-        },
-        required: ["city"]
-      }
-    },
-    {
-      name: "calculate",
-      description: "Evaluate a mathematical expression or unit conversion involving numbers.",
-      parameters: {
-        type: "object",
-        properties: {
-          expression: { type: "string", description: "Math expression e.g. 1284 / 36" }
-        },
-        required: ["expression"]
-      }
-    },
-    {
-      name: "get_time",
-      description: "Get the current local time and date in a given city.",
-      parameters: {
-        type: "object",
-        properties: {
-          city: { type: "string", description: "City name e.g. London" }
-        },
-        required: ["city"]
-      }
-    }
-  ]
+// ── Stage switcher ──────────────────────────────────────────────
+const STAGE_CONFIG = {
+  1: {
+    explainerClass: 's1',
+    explainerHTML: '<strong style="color:var(--decide)">Stage 1 — Single tool use.</strong> The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.',
+    placeholder: 'e.g. What is the weather in Singapore?',
+    chips: [
+      ['What is the weather in Tokyo?','Tokyo weather'],
+      ['What is 1284 divided by 36?','Calculator'],
+      ['What time is it in London right now?','London time'],
+      ['Is it raining in Bangkok?','Bangkok rain'],
+      ['Convert 250 SGD to USD','Currency']
+    ],
+    systemPrompt: 'You are a helpful AI agent with weather, calculator, and time tools. Use ONE tool per response — pick the most relevant one. After getting the tool result, give a friendly final answer.',
+    tools: ['get_weather','calculate','get_time'],
+    footer: 'Stage 1 of 4'
+  },
+  2: {
+    explainerClass: 's2',
+    explainerHTML: '<strong style="color:var(--observe)">Stage 2 — ReAct loop.</strong> The agent reasons and acts in multiple rounds. It can call several tools in sequence, thinking between each one, until the goal is fully complete. Watch the iteration counter climb.',
+    placeholder: 'e.g. Plan a day trip from Singapore to KL — check weather, convert 200 SGD to MYR, and work out arrival time if I leave at 9am (4.5hr journey)',
+    chips: [
+      ['Check the weather in KL, convert 300 SGD to MYR, and tell me what time I arrive if I take the 9am bus (4.5 hours)','KL day trip planner'],
+      ['What is the weather in Tokyo and what time is it there right now?','Tokyo weather + time'],
+      ['Convert 500 SGD to both USD and MYR, then tell me the weather in KL','Multi-currency + weather'],
+      ['Is it raining in Bangkok? If so, what time does it get dark there?','Bangkok rain + sunset']
+    ],
+    systemPrompt: 'You are a helpful AI agent that solves multi-part questions by using tools in sequence. Think step by step. Use tools one at a time, reason about each result, and keep going until you have everything needed to give a complete final answer. Do not guess — use a tool for every piece of data you need.',
+    tools: ['get_weather','calculate','get_time','get_exchange_rate'],
+    footer: 'Stage 2 of 4'
+  }
 };
 
-const CITY_TZ = {
-  london:"Europe/London",tokyo:"Asia/Tokyo",singapore:"Asia/Singapore",
-  "new york":"America/New_York",newyork:"America/New_York",sydney:"Australia/Sydney",
-  dubai:"Asia/Dubai",paris:"Europe/Paris",berlin:"Europe/Berlin",
-  bangkok:"Asia/Bangkok",jakarta:"Asia/Jakarta",seoul:"Asia/Seoul",
-  "kuala lumpur":"Asia/Kuala_Lumpur",kualalumpur:"Asia/Kuala_Lumpur"
+function switchStage(n) {
+  if(n === currentStage) return;
+  const cfg = STAGE_CONFIG[n];
+  if(!cfg) return;
+  currentStage = n;
+
+  document.querySelectorAll('.stage-tab:not(.locked)').forEach((t,i) => t.classList.toggle('active', i+1===n));
+
+  const ex = document.getElementById('explainer');
+  ex.className = 'explainer ' + cfg.explainerClass;
+  ex.innerHTML = cfg.explainerHTML;
+
+  document.getElementById('q').placeholder = cfg.placeholder;
+  document.getElementById('footer-stage').textContent = cfg.footer;
+
+  const chipsEl = document.getElementById('chips');
+  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick="setQ('${q.replace(/'/g,"\\'")}'">${l}</span>`).join('');
+
+  document.getElementById('trace-card').style.display = 'none';
+  document.getElementById('answer-card').style.display = 'none';
+  document.getElementById('log').innerHTML = '';
+  document.getElementById('q').value = '';
+  iterationCount = 0;
+}
+
+// ── Tools ───────────────────────────────────────────────────────
+const TOOLS_DEFS = {
+  get_weather: {
+    name:"get_weather",
+    description:"Get current weather for a city. Returns temperature, conditions, humidity, wind.",
+    parameters:{type:"object",properties:{city:{type:"string"},units:{type:"string",enum:["celsius","fahrenheit"]}},required:["city"]}
+  },
+  calculate: {
+    name:"calculate",
+    description:"Evaluate any mathematical expression, unit conversion, or arithmetic. Supports +, -, *, /, parentheses.",
+    parameters:{type:"object",properties:{expression:{type:"string",description:"Math expression e.g. 9 + 4.5, 200 * 3.51"}},required:["expression"]}
+  },
+  get_time: {
+    name:"get_time",
+    description:"Get the current local time and date in a given city.",
+    parameters:{type:"object",properties:{city:{type:"string"}},required:["city"]}
+  },
+  get_exchange_rate: {
+    name:"get_exchange_rate",
+    description:"Get the current exchange rate between two currencies and optionally convert an amount.",
+    parameters:{type:"object",properties:{from:{type:"string",description:"Source currency code e.g. SGD"},to:{type:"string",description:"Target currency code e.g. MYR"},amount:{type:"number",description:"Amount to convert (optional)"}},required:["from","to"]}
+  }
 };
 
 const WEATHER = {
@@ -268,136 +300,191 @@ const WEATHER = {
   sydney:{temp:19,feels:17,condition:"Clear",humidity:55,wind:14},
   dubai:{temp:38,feels:42,condition:"Sunny and hot",humidity:45,wind:10},
   paris:{temp:17,feels:15,condition:"Light rain",humidity:78,wind:16},
-  "new york":{temp:22,feels:21,condition:"Partly sunny",humidity:58,wind:20},
+  "kuala lumpur":{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
+  kl:{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
+  "kl ":{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
   bangkok:{temp:33,feels:38,condition:"Thunderstorm",humidity:88,wind:6},
+  "new york":{temp:22,feels:21,condition:"Partly sunny",humidity:58,wind:20},
   berlin:{temp:13,feels:11,condition:"Cloudy",humidity:70,wind:22},
-  jakarta:{temp:30,feels:35,condition:"Humid",humidity:82,wind:7},
   seoul:{temp:20,feels:18,condition:"Clear",humidity:52,wind:15}
 };
 
-function executeTool(name, args){
-  if(name === "get_weather"){
-    const key = (args.city||"").toLowerCase().trim();
-    const d = WEATHER[key] || {temp:25,feels:23,condition:"Partly cloudy",humidity:62,wind:11};
-    let t = d.temp, f = d.feels;
-    const isFahr = args.units === "fahrenheit";
-    if(isFahr){ t = Math.round(t*9/5+32); f = Math.round(f*9/5+32); }
-    const u = isFahr ? "°F" : "°C";
+const CITY_TZ = {
+  london:"Europe/London",tokyo:"Asia/Tokyo",singapore:"Asia/Singapore",
+  "new york":"America/New_York",newyork:"America/New_York",sydney:"Australia/Sydney",
+  dubai:"Asia/Dubai",paris:"Europe/Paris",berlin:"Europe/Berlin",
+  bangkok:"Asia/Bangkok",jakarta:"Asia/Jakarta",seoul:"Asia/Seoul",
+  "kuala lumpur":"Asia/Kuala_Lumpur",kl:"Asia/Kuala_Lumpur",kualalumpur:"Asia/Kuala_Lumpur"
+};
+
+const RATES = {
+  "SGD-MYR":3.51,"SGD-USD":0.74,"SGD-JPY":112.4,"SGD-EUR":0.68,"SGD-GBP":0.58,"SGD-AUD":1.14,
+  "USD-SGD":1.35,"USD-MYR":4.72,"USD-JPY":151.8,"USD-EUR":0.92,"MYR-SGD":0.285,
+  "MYR-USD":0.212,"JPY-USD":0.0066,"EUR-USD":1.09,"GBP-USD":1.27
+};
+
+function executeTool(name, args) {
+  if(name === "get_weather") {
+    const key = (args.city||"").toLowerCase().trim().replace(/\bkuala lumpur\b/,"kl");
+    const d = WEATHER[key] || WEATHER[(args.city||"").toLowerCase().trim()] || {temp:26,feels:24,condition:"Partly cloudy",humidity:65,wind:10};
+    let t=d.temp, f=d.feels;
+    const isFahr = args.units==="fahrenheit";
+    if(isFahr){t=Math.round(t*9/5+32);f=Math.round(f*9/5+32);}
+    const u=isFahr?"°F":"°C";
     return `Weather in ${args.city}: ${t}${u} (feels like ${f}${u}), ${d.condition}. Humidity ${d.humidity}%, wind ${d.wind} km/h.`;
   }
-  if(name === "calculate"){
+  if(name === "calculate") {
     try{
-      const safe = args.expression.replace(/[^0-9+\-*/().\s]/g,"");
-      const r = Function('"use strict";return('+safe+')')();
-      const rounded = Number.isInteger(r) ? r : parseFloat(r.toFixed(6));
+      const safe=(args.expression||"").replace(/[^0-9+\-*/().\s]/g,"");
+      const r=Function('"use strict";return('+safe+')')();
+      const rounded=Number.isInteger(r)?r:parseFloat(r.toFixed(4));
       return `${args.expression} = ${rounded.toLocaleString()}`;
-    }catch(e){ return "Could not evaluate: " + args.expression; }
+    }catch(e){ return "Could not evaluate: "+args.expression; }
   }
-  if(name === "get_time"){
-    const key = (args.city||"").toLowerCase().replace(/\s+/g,"");
-    const tz = CITY_TZ[key] || CITY_TZ[(args.city||"").toLowerCase()] || "UTC";
+  if(name === "get_time") {
+    const key=(args.city||"").toLowerCase().replace(/\s+/g,"").replace("kualalumpur","kl");
+    const tz=CITY_TZ[key]||CITY_TZ[(args.city||"").toLowerCase()]||"UTC";
     try{
-      const time = new Date().toLocaleTimeString("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",second:"2-digit"});
-      const date = new Date().toLocaleDateString("en-GB",{timeZone:tz,weekday:"long",day:"numeric",month:"long",year:"numeric"});
+      const time=new Date().toLocaleTimeString("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",second:"2-digit"});
+      const date=new Date().toLocaleDateString("en-GB",{timeZone:tz,weekday:"long",day:"numeric",month:"long",year:"numeric"});
       return `Current time in ${args.city}: ${time} — ${date}. (${tz})`;
-    }catch(e){ return "Could not get time for " + args.city; }
+    }catch(e){ return "Could not get time for "+args.city; }
   }
-  return "Unknown tool: " + name;
+  if(name === "get_exchange_rate") {
+    const key=`${(args.from||"").toUpperCase()}-${(args.to||"").toUpperCase()}`;
+    const rate=RATES[key];
+    if(!rate) return `Exchange rate for ${key} not available.`;
+    if(args.amount){
+      const converted=(args.amount*rate).toFixed(2);
+      return `${args.amount} ${args.from} = ${converted} ${args.to} (rate: 1 ${args.from} = ${rate} ${args.to})`;
+    }
+    return `Exchange rate: 1 ${args.from} = ${rate} ${args.to}`;
+  }
+  return "Unknown tool: "+name;
 }
 
-function addStep(phase, title, meta){
-  const cfg = {
-    decide:{cls:"si-decide",icon:"D"},
-    observe:{cls:"si-observe",icon:"O"},
-    reason:{cls:"si-reason",icon:"R"},
-    act:{cls:"si-act",icon:"A"}
-  };
-  const c = cfg[phase] || cfg.decide;
-  const el = document.createElement("div");
-  el.className = "step fade-in";
-  el.innerHTML = `<div class="step-icon ${c.cls}">${c.icon}</div><div class="step-body"><div class="step-title">${title}</div>${meta ? `<div class="step-meta">${meta}</div>` : ""}</div>`;
+// ── UI helpers ──────────────────────────────────────────────────
+function setQ(t){ document.getElementById('q').value=t; }
+
+function addStep(phase, title, meta) {
+  const cfg={decide:{cls:"si-decide",icon:"D"},observe:{cls:"si-observe",icon:"O"},reason:{cls:"si-reason",icon:"R"},act:{cls:"si-act",icon:"A"}};
+  const c=cfg[phase]||cfg.decide;
+  const el=document.createElement("div");
+  el.className="step fade-in";
+  el.innerHTML=`<div class="step-icon ${c.cls}">${c.icon}</div><div class="step-body"><div class="step-title">${title}</div>${meta?`<div class="step-meta">${meta}</div>`:""}</div>`;
   document.getElementById("log").appendChild(el);
 }
 
-async function runAgent(){
-  const q = document.getElementById("q").value.trim();
+function addLoopSep(n) {
+  const el=document.createElement("div");
+  el.className="loop-sep fade-in";
+  el.innerHTML=`<div class="loop-line"></div><div class="loop-label">loop ${n}</div><div class="loop-line"></div>`;
+  document.getElementById("log").appendChild(el);
+}
+
+function updateIterCount() {
+  const el=document.getElementById("iter-count");
+  if(el) el.textContent=`${iterationCount} iteration${iterationCount!==1?"s":""}`;
+}
+
+// ── Agent loop ──────────────────────────────────────────────────
+async function runAgent() {
+  const q=document.getElementById("q").value.trim();
   if(!q) return;
 
-  const btn = document.getElementById("ask-btn");
-  btn.disabled = true; btn.textContent = "Running…";
+  const btn=document.getElementById("ask-btn");
+  btn.disabled=true; btn.textContent="Running…";
 
-  document.getElementById("log").innerHTML = "";
-  document.getElementById("trace-card").style.display = "block";
-  document.getElementById("answer-card").style.display = "none";
+  document.getElementById("log").innerHTML="";
+  document.getElementById("trace-card").style.display="block";
+  document.getElementById("answer-card").style.display="none";
+  document.getElementById("stats-row").innerHTML="";
+  iterationCount=0;
+  updateIterCount();
+
+  const cfg=STAGE_CONFIG[currentStage];
+  const toolDefs=cfg.tools.map(t=>TOOLS_DEFS[t]);
 
   addStep("decide","Deciding which tool to use…","→ sending question + tool definitions to Gemini via Worker");
 
-  const contents = [{ role:"user", parts:[{text: q}] }];
+  const contents=[{role:"user",parts:[{text:q}]}];
+  const startTime=Date.now();
+  let totalToolCalls=0;
 
   try{
-    let iterations = 0;
-    while(iterations < 6){
-      iterations++;
+    let iterations=0;
+    const maxIter=currentStage===1?3:8;
 
-      const res = await fetch(WORKER_URL,{
+    while(iterations<maxIter){
+      iterations++;
+      iterationCount=iterations;
+      if(iterations>1) addLoopSep(iterations);
+      updateIterCount();
+
+      const res=await fetch(WORKER_URL,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          system_instruction:{ parts:[{text:"You are a helpful AI agent with weather, calculator, and time tools. Always use a tool when the question needs real data. After getting the tool result, give a friendly, clear final answer."}] },
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:cfg.systemPrompt}]},
           contents,
-          tools: [TOOLS_DEF],
-          generationConfig:{ temperature:0.1 }
+          tools:[{function_declarations:toolDefs}],
+          generationConfig:{temperature:0.1}
         })
       });
 
-      const data = await res.json();
-      if(data.error){ addStep("decide","API error: "+data.error.message,null); break; }
+      const data=await res.json();
+      if(data.error){addStep("decide","API error: "+data.error.message,null);break;}
 
-      const candidate = data.candidates?.[0];
-      if(!candidate){ addStep("decide","No response from model.",null); break; }
+      const candidate=data.candidates?.[0];
+      if(!candidate){addStep("decide","No response from model.",null);break;}
 
-      const parts = candidate.content?.parts || [];
-      const stopReason = candidate.finishReason;
-
-      const toolCalls = parts.filter(p => p.functionCall);
-      const textParts = parts.filter(p => p.text);
+      const parts=candidate.content?.parts||[];
+      const toolCalls=parts.filter(p=>p.functionCall);
+      const textParts=parts.filter(p=>p.text);
 
       if(textParts.length && !toolCalls.length){
-        const finalText = textParts.map(p=>p.text).join("\n");
-        addStep("reason","Reasoning complete — enough information gathered","→ loop ends here");
+        const finalText=textParts.map(p=>p.text).join("\n");
+        addStep("reason","Reasoning complete — goal fully achieved","→ loop ends here");
         addStep("act","Formulating final answer…",null);
-        document.getElementById("answer-card").style.display = "block";
-        document.getElementById("answer").textContent = finalText;
+        document.getElementById("answer-card").style.display="block";
+        document.getElementById("answer").textContent=finalText;
+        const elapsed=((Date.now()-startTime)/1000).toFixed(1);
+        document.getElementById("stats-row").innerHTML=
+          `<div class="stat">loops <span>${iterationCount}</span></div>`+
+          `<div class="stat">tool calls <span>${totalToolCalls}</span></div>`+
+          `<div class="stat">time <span>${elapsed}s</span></div>`+
+          `<div class="stat">stage <span>${currentStage}</span></div>`;
         break;
       }
 
       if(textParts.length){
-        addStep("reason",`Thinking: "${textParts.map(p=>p.text).join(" ").substring(0,120)}…"`,null);
+        addStep("reason",`Thinking: "${textParts.map(p=>p.text).join(" ").substring(0,140)}…"`,null);
       }
 
-      contents.push({ role:"model", parts });
+      contents.push({role:"model",parts});
 
-      const toolResultParts = [];
+      const toolResultParts=[];
       for(const part of toolCalls){
-        const fn = part.functionCall;
-        addStep("decide",`Decided to call: <strong>${fn.name}</strong>`, JSON.stringify(fn.args));
-        const result = executeTool(fn.name, fn.args);
-        addStep("observe",`Observed result: ${result}`,null);
-        toolResultParts.push({ functionResponse:{ name:fn.name, response:{ result } } });
+        const fn=part.functionCall;
+        totalToolCalls++;
+        addStep("decide",`Decided to call: <strong>${fn.name}</strong>`,JSON.stringify(fn.args));
+        const result=executeTool(fn.name,fn.args);
+        addStep("observe","Observed result: "+result,null);
+        toolResultParts.push({functionResponse:{name:fn.name,response:{result}}});
       }
 
-      contents.push({ role:"user", parts: toolResultParts });
-      addStep("reason","Reasoning about the tool result…","→ looping back to model");
+      contents.push({role:"user",parts:toolResultParts});
+      addStep("reason","Reasoning about the result…","→ looping back to model");
     }
   }catch(e){
     addStep("decide","Error: "+e.message,null);
   }
 
-  btn.disabled = false; btn.textContent = "Ask";
+  btn.disabled=false;
+  btn.textContent="Ask";
 }
 
-document.getElementById("q").addEventListener("keydown", e=>{ if(e.key==="Enter") runAgent(); });
-
+document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")runAgent();});
 </script>
 </body>
 </html>
