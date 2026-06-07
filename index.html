@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DORA — Decide · Observe · Reason · Act</title>
+<meta name="description" content="Learn agentic AI hands-on. Watch an AI agent decide, observe, reason, and act in real time across 4 progressive stages.">
+<meta name="keywords" content="agentic AI, AI agent, tool use, ReAct, multi-agent, learn AI">
+<meta name="author" content="buildjoynow.com">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dora.buildjoynow.com">
+<meta property="og:title" content="DORA — Decide · Observe · Reason · Act">
+<meta property="og:description" content="Learn agentic AI hands-on. Watch an AI agent decide, observe, reason, and act in real time.">
+<meta property="og:image" content="https://dora.buildjoynow.com/og.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DORA — Decide · Observe · Reason · Act">
+<meta name="twitter:description" content="Learn agentic AI hands-on. Watch the agent loop live.">
+<meta name="twitter:image" content="https://dora.buildjoynow.com/og.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230f0f0f'/><text x='32' y='44' font-family='serif' font-size='32' font-weight='700' fill='white' text-anchor='middle'>D</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --surface:#111111;
+  --surface2:#1a1a1a;
+  --border:#2a2a2a;
+  --text:#f0ede8;
+  --muted:#6b6860;
+  --accent:#e8d5a3;
+  --accent2:#a3c4e8;
+  --decide:#c9a96e;
+  --observe:#7eb8a0;
+  --reason:#a08ec9;
+  --act:#c97e7e;
+  --font-display:'DM Serif Display',serif;
+  --font-body:'Outfit',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;line-height:1.6;min-height:100vh}
+
+/* hero */
+.hero{padding:3rem 1.5rem 2rem;max-width:680px;margin:0 auto;text-align:center}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:2rem}
+.logo-svg{width:72px;height:72px}
+.hero-title{font-family:var(--font-display);font-size:clamp(2.8rem,8vw,4.5rem);line-height:1;letter-spacing:-.02em;margin-bottom:.75rem;color:var(--text)}
+.hero-title em{font-style:italic;color:var(--accent)}
+.acronym-row{display:flex;justify-content:center;gap:clamp(12px,3vw,28px);margin:1.5rem 0 1rem}
+.letter-pill{display:flex;flex-direction:column;align-items:center;gap:5px}
+.letter-char{font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;width:clamp(44px,9vw,60px);height:clamp(44px,9vw,60px);border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid}
+.letter-char.d{background:rgba(201,169,110,.12);color:var(--decide);border-color:rgba(201,169,110,.25)}
+.letter-char.o{background:rgba(126,184,160,.12);color:var(--observe);border-color:rgba(126,184,160,.25)}
+.letter-char.r{background:rgba(160,142,201,.12);color:var(--reason);border-color:rgba(160,142,201,.25)}
+.letter-char.a{background:rgba(201,126,126,.12);color:var(--act);border-color:rgba(201,126,126,.25)}
+.letter-word{font-size:clamp(9px,2vw,11px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.hero-sub{font-size:clamp(13px,3vw,15px);color:var(--muted);max-width:420px;margin:0 auto 2rem}
+
+/* stage badge */
+.stage-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:4px 12px 4px 6px;font-size:12px;color:var(--muted);margin-bottom:2rem}
+.stage-dot{width:8px;height:8px;border-radius:50%;background:var(--observe)}
+
+/* main panel */
+.panel{max-width:680px;margin:0 auto;padding:0 1rem 4rem}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:12px}
+
+/* input area */
+.input-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
+.input-row{display:flex;gap:8px}
+.input-row input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.input-row input:focus{border-color:var(--accent)}
+.input-row input::placeholder{color:var(--muted)}
+.ask-btn{background:var(--accent);color:#0a0a0a;border:none;border-radius:10px;padding:10px 18px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+.ask-btn:hover{opacity:.85}
+.ask-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:12px;padding:4px 10px;border-radius:8px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);cursor:pointer;font-family:var(--font-mono);transition:border-color .15s,color .15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* trace */
+.trace-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px}
+.step{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.step:last-child{border-bottom:none}
+.step-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;font-family:var(--font-mono)}
+.si-decide{background:rgba(201,169,110,.15);color:var(--decide)}
+.si-observe{background:rgba(126,184,160,.15);color:var(--observe)}
+.si-reason{background:rgba(160,142,201,.15);color:var(--reason)}
+.si-act{background:rgba(201,126,126,.15);color:var(--act)}
+.step-body{flex:1;min-width:0}
+.step-title{font-size:13px;color:var(--text);line-height:1.5}
+.step-meta{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:2px;word-break:break-all}
+
+/* answer */
+.answer-box{background:var(--surface2);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text);border-left:3px solid var(--observe)}
+
+/* key section */
+.key-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.key-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:var(--font-mono);font-size:13px;color:var(--text);outline:none}
+.key-input:focus{border-color:var(--accent)}
+.key-save{background:transparent;border:1px solid var(--border);border-radius:10px;padding:9px 14px;color:var(--muted);font-size:13px;cursor:pointer;white-space:nowrap;transition:border-color .2s,color .2s}
+.key-save:hover{border-color:var(--accent);color:var(--accent)}
+.key-note{font-size:11px;color:var(--muted)}
+.key-note a{color:var(--accent);text-decoration:none}
+
+/* footer */
+.footer{text-align:center;font-size:12px;color:var(--muted);padding:2rem;border-top:1px solid var(--border)}
+.footer span{color:var(--accent)}
+
+/* animation */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .3s ease forwards}
+
+/* pulse dot */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse{animation:pulse 1.2s ease infinite}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo-wrap">
+    <svg class="logo-svg" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="72" height="72" rx="18" fill="#111111" stroke="#2a2a2a" stroke-width="1"/>
+      <circle cx="36" cy="36" r="20" stroke="#2a2a2a" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="36" cy="16" r="5" fill="rgba(201,169,110,0.2)" stroke="#c9a96e" stroke-width="1.5"/>
+      <text x="36" y="20" font-family="serif" font-size="7" fill="#c9a96e" text-anchor="middle" font-weight="700">D</text>
+      <circle cx="56" cy="36" r="5" fill="rgba(126,184,160,0.2)" stroke="#7eb8a0" stroke-width="1.5"/>
+      <text x="56" y="40" font-family="serif" font-size="7" fill="#7eb8a0" text-anchor="middle" font-weight="700">O</text>
+      <circle cx="36" cy="56" r="5" fill="rgba(160,142,201,0.2)" stroke="#a08ec9" stroke-width="1.5"/>
+      <text x="36" y="60" font-family="serif" font-size="7" fill="#a08ec9" text-anchor="middle" font-weight="700">R</text>
+      <circle cx="16" cy="36" r="5" fill="rgba(201,126,126,0.2)" stroke="#c97e7e" stroke-width="1.5"/>
+      <text x="16" y="40" font-family="serif" font-size="7" fill="#c97e7e" text-anchor="middle" font-weight="700">A</text>
+      <path d="M36 21 L51 31 M51 41 L41 51 M31 51 L21 41 M21 31 L31 21" stroke="#2a2a2a" stroke-width="1"/>
+      <circle cx="36" cy="36" r="4" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
+      <circle cx="36" cy="36" r="1.5" fill="#e8d5a3"/>
+    </svg>
+  </div>
+
+  <div class="acronym-row">
+    <div class="letter-pill">
+      <div class="letter-char d">D</div>
+      <div class="letter-word">Decide</div>
+    </div>
+    <div class="letter-pill">
+      <div class="letter-char o">O</div>
+      <div class="letter-word">Observe</div>
+    </div>
+    <div class="letter-pill">
+      <div class="letter-char r">R</div>
+      <div class="letter-word">Reason</div>
+    </div>
+    <div class="letter-pill">
+      <div class="letter-char a">A</div>
+      <div class="letter-word">Act</div>
+    </div>
+  </div>
+
+  <h1 class="hero-title">Learn <em>agentic</em> AI</h1>
+  <p class="hero-sub">Watch a real AI agent decide what to do, observe results, reason through them, and act — step by step, in real time.</p>
+
+  <div class="stage-badge">
+    <div class="stage-dot pulse"></div>
+    Stage 1 · Single tool use
+  </div>
+</div>
+
+<div class="panel">
+
+  <div class="card" id="key-card">
+    <div class="input-label">Gemini API key</div>
+    <div class="key-row">
+      <input class="key-input" type="password" id="api-key" placeholder="AIza..." />
+      <button class="key-save" onclick="saveKey()">Save</button>
+    </div>
+    <p class="key-note">Stored in your browser only. Free tier at <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></p>
+  </div>
+
+  <div class="card">
+    <div class="input-label">Ask the agent</div>
+    <div class="input-row">
+      <input type="text" id="q" placeholder="e.g. What is the weather in Singapore?" />
+      <button class="ask-btn" id="ask-btn" onclick="runAgent()">Ask</button>
+    </div>
+    <div class="chips">
+      <span class="chip" onclick="setQ('What is the weather in Tokyo?')">Tokyo weather</span>
+      <span class="chip" onclick="setQ('What is 1284 divided by 36?')">Calculator</span>
+      <span class="chip" onclick="setQ('What time is it in London right now?')">London time</span>
+      <span class="chip" onclick="setQ('Is it raining in Bangkok?')">Bangkok rain</span>
+      <span class="chip" onclick="setQ('Convert 250 SGD to USD')">Currency</span>
+    </div>
+  </div>
+
+  <div class="card fade-in" id="trace-card" style="display:none">
+    <div class="trace-label">Agent trace — the DORA loop</div>
+    <div id="log"></div>
+  </div>
+
+  <div class="card fade-in" id="answer-card" style="display:none">
+    <div class="trace-label">Final answer</div>
+    <div class="answer-box" id="answer"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  built by <span>buildjoynow.com</span> · DORA v1.0 · Stage 1 of 4
+</div>
+
+<script>
+const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+
+function saveKey(){
+  const k = document.getElementById('api-key').value.trim();
+  if(!k) return;
+  localStorage.setItem('dora_gemini_key', k);
+  document.getElementById('key-card').style.borderColor = '#7eb8a0';
+  document.getElementById('api-key').placeholder = 'Key saved ✓';
+  document.getElementById('api-key').value = '';
+}
+
+function getKey(){
+  return localStorage.getItem('dora_gemini_key') || document.getElementById('api-key').value.trim();
+}
+
+function setQ(t){ document.getElementById('q').value = t; }
+
+const TOOLS_DEF = {
+  function_declarations: [
+    {
+      name: "get_weather",
+      description: "Get current weather for a city. Returns temperature, conditions, humidity, wind.",
+      parameters: {
+        type: "object",
+        properties: {
+          city: { type: "string", description: "City name e.g. Tokyo" },
+          units: { type: "string", enum: ["celsius","fahrenheit"], description: "Temperature unit, default celsius" }
+        },
+        required: ["city"]
+      }
+    },
+    {
+      name: "calculate",
+      description: "Evaluate a mathematical expression or unit conversion involving numbers.",
+      parameters: {
+        type: "object",
+        properties: {
+          expression: { type: "string", description: "Math expression e.g. 1284 / 36" }
+        },
+        required: ["expression"]
+      }
+    },
+    {
+      name: "get_time",
+      description: "Get the current local time and date in a given city.",
+      parameters: {
+        type: "object",
+        properties: {
+          city: { type: "string", description: "City name e.g. London" }
+        },
+        required: ["city"]
+      }
+    }
+  ]
+};
+
+const CITY_TZ = {
+  london:"Europe/London",tokyo:"Asia/Tokyo",singapore:"Asia/Singapore",
+  "new york":"America/New_York",newyork:"America/New_York",sydney:"Australia/Sydney",
+  dubai:"Asia/Dubai",paris:"Europe/Paris",berlin:"Europe/Berlin",
+  bangkok:"Asia/Bangkok",jakarta:"Asia/Jakarta",seoul:"Asia/Seoul",
+  "kuala lumpur":"Asia/Kuala_Lumpur",kualalumpur:"Asia/Kuala_Lumpur"
+};
+
+const WEATHER = {
+  tokyo:{temp:24,feels:22,condition:"Partly cloudy",humidity:68,wind:12},
+  singapore:{temp:31,feels:36,condition:"Humid and hazy",humidity:84,wind:8},
+  london:{temp:14,feels:12,condition:"Overcast",humidity:72,wind:18},
+  sydney:{temp:19,feels:17,condition:"Clear",humidity:55,wind:14},
+  dubai:{temp:38,feels:42,condition:"Sunny and hot",humidity:45,wind:10},
+  paris:{temp:17,feels:15,condition:"Light rain",humidity:78,wind:16},
+  "new york":{temp:22,feels:21,condition:"Partly sunny",humidity:58,wind:20},
+  bangkok:{temp:33,feels:38,condition:"Thunderstorm",humidity:88,wind:6},
+  berlin:{temp:13,feels:11,condition:"Cloudy",humidity:70,wind:22},
+  jakarta:{temp:30,feels:35,condition:"Humid",humidity:82,wind:7},
+  seoul:{temp:20,feels:18,condition:"Clear",humidity:52,wind:15}
+};
+
+function executeTool(name, args){
+  if(name === "get_weather"){
+    const key = (args.city||"").toLowerCase().trim();
+    const d = WEATHER[key] || {temp:25,feels:23,condition:"Partly cloudy",humidity:62,wind:11};
+    let t = d.temp, f = d.feels;
+    const isFahr = args.units === "fahrenheit";
+    if(isFahr){ t = Math.round(t*9/5+32); f = Math.round(f*9/5+32); }
+    const u = isFahr ? "°F" : "°C";
+    return `Weather in ${args.city}: ${t}${u} (feels like ${f}${u}), ${d.condition}. Humidity ${d.humidity}%, wind ${d.wind} km/h.`;
+  }
+  if(name === "calculate"){
+    try{
+      const safe = args.expression.replace(/[^0-9+\-*/().\s]/g,"");
+      const r = Function('"use strict";return('+safe+')')();
+      const rounded = Number.isInteger(r) ? r : parseFloat(r.toFixed(6));
+      return `${args.expression} = ${rounded.toLocaleString()}`;
+    }catch(e){ return "Could not evaluate: " + args.expression; }
+  }
+  if(name === "get_time"){
+    const key = (args.city||"").toLowerCase().replace(/\s+/g,"");
+    const tz = CITY_TZ[key] || CITY_TZ[(args.city||"").toLowerCase()] || "UTC";
+    try{
+      const time = new Date().toLocaleTimeString("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",second:"2-digit"});
+      const date = new Date().toLocaleDateString("en-GB",{timeZone:tz,weekday:"long",day:"numeric",month:"long",year:"numeric"});
+      return `Current time in ${args.city}: ${time} — ${date}. (${tz})`;
+    }catch(e){ return "Could not get time for " + args.city; }
+  }
+  return "Unknown tool: " + name;
+}
+
+function addStep(phase, title, meta){
+  const cfg = {
+    decide:{cls:"si-decide",icon:"D"},
+    observe:{cls:"si-observe",icon:"O"},
+    reason:{cls:"si-reason",icon:"R"},
+    act:{cls:"si-act",icon:"A"}
+  };
+  const c = cfg[phase] || cfg.decide;
+  const el = document.createElement("div");
+  el.className = "step fade-in";
+  el.innerHTML = `<div class="step-icon ${c.cls}">${c.icon}</div><div class="step-body"><div class="step-title">${title}</div>${meta ? `<div class="step-meta">${meta}</div>` : ""}</div>`;
+  document.getElementById("log").appendChild(el);
+}
+
+async function runAgent(){
+  const q = document.getElementById("q").value.trim();
+  if(!q) return;
+  const key = getKey();
+  if(!key){ alert("Please enter your Gemini API key above."); return; }
+
+  const btn = document.getElementById("ask-btn");
+  btn.disabled = true; btn.textContent = "Running…";
+
+  document.getElementById("log").innerHTML = "";
+  document.getElementById("trace-card").style.display = "block";
+  document.getElementById("answer-card").style.display = "none";
+
+  addStep("decide","Deciding which tool to use…","→ sending question + tool definitions to Gemini");
+
+  const contents = [{ role:"user", parts:[{text: q}] }];
+
+  try{
+    let iterations = 0;
+    while(iterations < 6){
+      iterations++;
+
+      const res = await fetch(`${GEMINI_ENDPOINT}?key=${key}`,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          system_instruction:{ parts:[{text:"You are a helpful AI agent with weather, calculator, and time tools. Always use a tool when the question needs real data. After getting the tool result, give a friendly, clear final answer."}] },
+          contents,
+          tools: [TOOLS_DEF],
+          generationConfig:{ temperature:0.1 }
+        })
+      });
+
+      const data = await res.json();
+      if(data.error){ addStep("decide","API error: "+data.error.message,null); break; }
+
+      const candidate = data.candidates?.[0];
+      if(!candidate){ addStep("decide","No response from model.",null); break; }
+
+      const parts = candidate.content?.parts || [];
+      const stopReason = candidate.finishReason;
+
+      const toolCalls = parts.filter(p => p.functionCall);
+      const textParts = parts.filter(p => p.text);
+
+      if(textParts.length && !toolCalls.length){
+        const finalText = textParts.map(p=>p.text).join("\n");
+        addStep("reason","Reasoning complete — enough information gathered","→ loop ends here");
+        addStep("act","Formulating final answer…",null);
+        document.getElementById("answer-card").style.display = "block";
+        document.getElementById("answer").textContent = finalText;
+        break;
+      }
+
+      if(textParts.length){
+        addStep("reason",`Thinking: "${textParts.map(p=>p.text).join(" ").substring(0,120)}…"`,null);
+      }
+
+      contents.push({ role:"model", parts });
+
+      const toolResultParts = [];
+      for(const part of toolCalls){
+        const fn = part.functionCall;
+        addStep("decide",`Decided to call: <strong>${fn.name}</strong>`, JSON.stringify(fn.args));
+        const result = executeTool(fn.name, fn.args);
+        addStep("observe",`Observed result: ${result}`,null);
+        toolResultParts.push({ functionResponse:{ name:fn.name, response:{ result } } });
+      }
+
+      contents.push({ role:"user", parts: toolResultParts });
+      addStep("reason","Reasoning about the tool result…","→ looping back to model");
+    }
+  }catch(e){
+    addStep("decide","Error: "+e.message,null);
+  }
+
+  btn.disabled = false; btn.textContent = "Ask";
+}
+
+document.getElementById("q").addEventListener("keydown", e=>{ if(e.key==="Enter") runAgent(); });
+
+const saved = localStorage.getItem('dora_gemini_key');
+if(saved){ document.getElementById('api-key').placeholder = 'Key saved — ready to use'; document.getElementById('key-card').style.borderColor='#7eb8a0'; }
+</script>
+</body>
+</html>
