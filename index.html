@@ -563,13 +563,23 @@ async function runMultiAgent(){
     const results=await Promise.all(active.map(function(e){return runSpecialist(e[0],e[1]);}));
 
     const t1=((Date.now()-t0)/1000).toFixed(1);
-    addStep('a','All '+results.length+' specialists done in '+t1+'s','handing to orchestrator for synthesis');
+    addStep('a','All '+results.length+' specialists done in '+t1+'s','waiting 3s before synthesis...');
+    await new Promise(function(r){setTimeout(r,3000);});
+    addStep('r','Synthesising results...','handing to orchestrator');
 
-    // Synthesise
+    // Synthesise — with retry on rate limit
     const synthesis=results.map(function(r){return r.key+' agent result: '+r.result;}).join('\n\n');
-    const synRes=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:'You are a synthesis orchestrator. Combine these specialist results into a clear, well-structured final answer. Be warm and practical.'}]},contents:[{role:'user',parts:[{text:'Original query: '+q+'\n\nSpecialist results:\n'+synthesis+'\n\nSynthesise into a complete answer.'}]}],generationConfig:{temperature:0.3}})});
-    const synData=await synRes.json();
-    if(synData.error){addStep('d','Synthesis error: '+synData.error.message);btn.disabled=false;btn.textContent='Ask';return;}
+    let synData=null;
+    for(let attempt=0;attempt<3;attempt++){
+      const synRes=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:'You are a synthesis orchestrator. Combine these specialist results into a clear, well-structured final answer. Be warm and practical.'}]},contents:[{role:'user',parts:[{text:'Original query: '+q+'\n\nSpecialist results:\n'+synthesis+'\n\nSynthesise into a complete answer.'}]}],generationConfig:{temperature:0.3}})});
+      synData=await synRes.json();
+      if(!synData.error)break;
+      if(attempt<2){
+        addStep('r','Rate limit - waiting 6s before retry '+(attempt+2)+'/3...');
+        await new Promise(function(r){setTimeout(r,6000);});
+      }
+    }
+    if(!synData||synData.error){addStep('d','Synthesis error: '+(synData&&synData.error?synData.error.message:'unknown'));btn.disabled=false;btn.textContent='Ask';return;}
 
     const final=synData.candidates[0].content.parts.filter(function(p){return p.text;}).map(function(p){return p.text;}).join('\n');
     const totalCalls=results.reduce(function(s,r){return s+r.calls;},0);
