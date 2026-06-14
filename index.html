@@ -330,29 +330,31 @@ const STAGE_CONFIG = {
 
 // ── Stage switcher ───────────────────────────────────────────────
 function switchStage(n) {
-  if(n === currentStage) return;
   const cfg = STAGE_CONFIG[n];
   if(!cfg) return;
   currentStage = n;
 
-  document.querySelectorAll('.stage-tab:not(.locked)').forEach((t,i) => t.classList.toggle('active', i+1===n));
+  // Update tab active states by ID — no index math
+  [1,2,3].forEach(i => {
+    const t = document.getElementById('tab-'+i);
+    if(t) t.classList.toggle('active', i===n);
+  });
 
   const ex = document.getElementById('explainer');
   ex.className = 'explainer s'+n;
   ex.innerHTML = cfg.explainerHTML;
 
   document.getElementById('q').placeholder = cfg.placeholder;
+  document.getElementById('q').value = '';
   document.getElementById('footer-stage').textContent = cfg.footer;
   document.getElementById('memory-panel').style.display = n===3 ? 'block' : 'none';
-
-  const chipsEl = document.getElementById('chips');
-  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick='setQ(${JSON.stringify(q)})'>${l}</span>`).join('');
-
   document.getElementById('trace-card').style.display = 'none';
   document.getElementById('answer-card').style.display = 'none';
   document.getElementById('log').innerHTML = '';
-  document.getElementById('q').value = '';
   iterationCount = 0;
+
+  const chipsEl = document.getElementById('chips');
+  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick='setQ(${JSON.stringify(q)})'>${l}</span>`).join('');
 
   if(n===3) renderMemory();
 }
@@ -504,8 +506,7 @@ async function runAgent(){
     const memPrompt=buildMemoryPrompt();
     systemPrompt='You are a helpful AI agent with memory. You MUST use tools to fetch any real data. Use save_memory to remember important facts about the user (name, home city, travel destinations, preferences). Save one fact at a time. Give warm personalised answers referencing what you know.'+ memPrompt;
     if(memPrompt){
-      addStep("memory","Memory loaded — injecting context into prompt", memPrompt.replace(/
-/g,' ').substring(0,120));
+      addStep("memory","Memory loaded — injecting context into prompt", memPrompt.replace(/\n/g,' ').substring(0,120));
     }
   }
 
