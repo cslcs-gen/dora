@@ -56,6 +56,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .explainer.s1{border-color:var(--decide)}
 .explainer.s2{border-color:var(--observe)}
 .explainer.s3{border-color:var(--reason)}
+.explainer.s4{border-color:var(--act)}
+/* sub-agent panels */
+.sub-agents{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.sub-agent{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sub-agent-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer}
+.sub-agent-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;font-family:var(--font-mono)}
+.sub-agent-name{font-size:13px;font-weight:500;flex:1}
+.sub-agent-status{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.sub-agent-body{padding:0 14px 10px;display:none}
+.sub-agent-body.open{display:block}
+.sub-step{font-size:12px;color:#b0ada8;padding:3px 0;border-bottom:1px solid var(--border);line-height:1.5}
+.sub-step:last-child{border-bottom:none}
+.sub-step span{font-family:var(--font-mono);color:var(--muted);font-size:11px}
+.orch-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--act);font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.parallel-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(201,126,126,.12);color:var(--act);border:1px solid rgba(201,126,126,.2)}
 
 /* panel */
 .panel{max-width:680px;margin:0 auto;padding:0 1rem 4rem}
@@ -120,6 +135,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .footer{text-align:center;font-size:12px;color:var(--muted);padding:2rem;border-top:1px solid var(--border)}
 .footer em{color:var(--accent);font-style:normal}
 
+/* stage 4 sub-agents */
+.agents-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.agent-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.agent-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none}
+.agent-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.agent-name{font-size:13px;font-weight:500;flex:1}
+.agent-status{font-size:11px;font-family:var(--font-mono);color:var(--muted)}
+.agent-body{padding:0 14px 10px;display:none}
+.agent-body.open{display:block}
+.agent-step{font-size:12px;color:#b0ada8;padding:3px 0;border-bottom:1px solid var(--border);line-height:1.5}
+.agent-step:last-child{border-bottom:none}
+.agent-result{font-size:12px;color:var(--text);background:var(--surface2);border-radius:6px;padding:8px 10px;margin-top:6px;line-height:1.6}
+.parallel-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(201,126,126,.12);color:var(--act);border:1px solid rgba(201,126,126,.2);font-family:var(--font-mono)}
+.explainer.s4{border-color:var(--act)}
+
 /* animations */
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease forwards}
@@ -170,7 +200,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
     <button class="stage-tab active" id="tab-1" onclick="switchStage(1)">Stage 1 · Single tool</button>
     <button class="stage-tab" id="tab-2" onclick="switchStage(2)">Stage 2 · ReAct loop</button>
     <button class="stage-tab" id="tab-3" onclick="switchStage(3)">Stage 3 · Memory</button>
-    <button class="stage-tab locked" title="Coming soon">Stage 4 · Multi-agent</button>
+    <button class="stage-tab" id="tab-4" onclick="switchStage(4)">Stage 4 · Multi-agent</button>
   </div>
 </div>
 
@@ -192,12 +222,77 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
     <div class="memory-injected" id="memory-injected" style="display:none"></div>
   </div>
 
+  <!-- Agents panel (Stage 4 only) -->
+  <div id="agents-panel" style="display:none;margin-bottom:12px">
+    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--act);font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+      Specialist agents
+      <span class="parallel-badge">parallel</span>
+    </div>
+    <div class="agents-grid">
+      <div class="agent-panel" id="agent-weather">
+        <div class="agent-header" onclick="toggleAgent('agent-weather')">
+          <div class="agent-icon" style="background:rgba(201,169,110,.15);color:var(--decide)">W</div>
+          <div class="agent-name">Weather Agent</div>
+          <div class="agent-status" id="agent-weather-status">idle</div>
+        </div>
+        <div class="agent-body" id="agent-weather-body"></div>
+      </div>
+      <div class="agent-panel" id="agent-finance">
+        <div class="agent-header" onclick="toggleAgent('agent-finance')">
+          <div class="agent-icon" style="background:rgba(126,184,160,.15);color:var(--observe)">F</div>
+          <div class="agent-name">Finance Agent</div>
+          <div class="agent-status" id="agent-finance-status">idle</div>
+        </div>
+        <div class="agent-body" id="agent-finance-body"></div>
+      </div>
+      <div class="agent-panel" id="agent-time">
+        <div class="agent-header" onclick="toggleAgent('agent-time')">
+          <div class="agent-icon" style="background:rgba(160,142,201,.15);color:var(--reason)">T</div>
+          <div class="agent-name">Time Agent</div>
+          <div class="agent-status" id="agent-time-status">idle</div>
+        </div>
+        <div class="agent-body" id="agent-time-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-agent panels (Stage 4 only) -->
+  <div id="sub-agents-wrap" style="display:none">
+    <div class="orch-label">Specialist agents <span class="parallel-badge">parallel</span></div>
+    <div class="sub-agents">
+      <div class="sub-agent" id="sa-weather">
+        <div class="sub-agent-header" onclick="toggleSA('weather')">
+          <div class="sub-agent-icon" style="background:rgba(201,169,110,.15);color:var(--decide)">W</div>
+          <div class="sub-agent-name">Weather Agent</div>
+          <div class="sub-agent-status" id="sa-weather-status">waiting</div>
+        </div>
+        <div class="sub-agent-body" id="sa-weather-body"></div>
+      </div>
+      <div class="sub-agent" id="sa-finance">
+        <div class="sub-agent-header" onclick="toggleSA('finance')">
+          <div class="sub-agent-icon" style="background:rgba(126,184,160,.15);color:var(--observe)">F</div>
+          <div class="sub-agent-name">Finance Agent</div>
+          <div class="sub-agent-status" id="sa-finance-status">waiting</div>
+        </div>
+        <div class="sub-agent-body" id="sa-finance-body"></div>
+      </div>
+      <div class="sub-agent" id="sa-time">
+        <div class="sub-agent-header" onclick="toggleSA('time')">
+          <div class="sub-agent-icon" style="background:rgba(160,142,201,.15);color:var(--reason)">T</div>
+          <div class="sub-agent-name">Time Agent</div>
+          <div class="sub-agent-status" id="sa-time-status">waiting</div>
+        </div>
+        <div class="sub-agent-body" id="sa-time-body"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Ask card -->
   <div class="card">
     <div class="input-label" id="ask-label">Ask the agent</div>
     <div class="input-row">
       <input type="text" id="q" placeholder="e.g. What is the weather in Singapore?" />
-      <button class="ask-btn" id="ask-btn" onclick="runAgent()">Ask</button>
+      <button class="ask-btn" id="ask-btn" onclick="currentStage===4 ? runOrchestrator() : runAgent()">Ask</button>
     </div>
     <div class="chips" id="chips">
       <span class="chip" onclick="setQ('What is the weather in Tokyo?')">Tokyo weather</span>
@@ -325,17 +420,29 @@ const STAGE_CONFIG = {
     tools: ['get_weather','calculate','get_time','get_exchange_rate','save_memory'],
     maxIter: 10,
     footer: 'Stage 3 of 4'
+  },
+  4: {
+    explainerHTML: `<strong style="color:var(--act)">Stage 4 &mdash; Multi-agent.</strong> One orchestrator breaks the goal into sub-tasks and dispatches specialist agents in parallel. Each specialist has its own tools and focus. Watch all three work simultaneously, then the orchestrator synthesises the final answer.`,
+    placeholder: 'e.g. I am flying from Singapore to London tomorrow. Briefing please.',
+    chips: [
+      ['I am flying from Singapore to London tomorrow. Give me a full briefing — weather both cities, time difference, and how much spending money in GBP if I bring 500 SGD.','Travel briefing'],
+      ['Compare Singapore and Tokyo — weather, current time, and 300 SGD in JPY.','SG vs Tokyo briefing'],
+      ['I am heading to Dubai. Weather there, time now, and 400 SGD in AED.','Dubai briefing'],
+      ['Weekend trip to Bangkok — weather, local time, and 200 SGD in THB.','Bangkok weekend']
+    ],
+    systemPrompt: '',
+    tools: [],
+    maxIter: 0,
+    footer: 'Stage 4 of 4'
   }
 };
-
-// ── Stage switcher ───────────────────────────────────────────────
 function switchStage(n) {
   try {
   const cfg = STAGE_CONFIG[n];
   if(!cfg) return;
   currentStage = n;
 
-  [1,2,3].forEach(i => {
+  [1,2,3,4].forEach(i => {
     const t = document.getElementById('tab-'+i);
     if(t) t.classList.toggle('active', i===n);
   });
@@ -348,6 +455,9 @@ function switchStage(n) {
   document.getElementById('q').value = '';
   document.getElementById('footer-stage').textContent = cfg.footer;
   document.getElementById('memory-panel').style.display = n===3 ? 'block' : 'none';
+  document.getElementById('sub-agents-wrap').style.display = n===4 ? 'block' : 'none';
+  if(n===4){ resetSubAgents(); }
+  document.getElementById('agents-panel').style.display = n===4 ? 'block' : 'none';
   document.getElementById('trace-card').style.display = 'none';
   document.getElementById('answer-card').style.display = 'none';
   document.getElementById('log').innerHTML = '';
@@ -357,6 +467,7 @@ function switchStage(n) {
   chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick='setQ(${JSON.stringify(q)})'>${l}</span>`).join('');
 
   if(n===3) renderMemory();
+  if(n===4) resetAgentPanels();
   } catch(e) { alert('switchStage error: '+e.message); }
 }
 
@@ -485,6 +596,7 @@ function updateIterCount(){
 
 // ── Agent loop ───────────────────────────────────────────────────
 async function runAgent(){
+  if(currentStage===4){ runMultiAgent(); return; }
   const q=document.getElementById("q").value.trim();
   if(!q) return;
 
@@ -590,7 +702,414 @@ async function runAgent(){
   btn.textContent="Ask";
 }
 
+
+// ── Stage 4 — Multi-agent orchestrator ──────────────────────────
+const SPECIALISTS = {
+  weather: {
+    id: 'agent-weather',
+    prompt: 'You are a weather specialist agent. Use the get_weather tool to fetch weather data for any cities requested. Return only weather facts — temperature, conditions, humidity, wind. Be concise.',
+    tools: ['get_weather']
+  },
+  finance: {
+    id: 'agent-finance',
+    prompt: 'You are a finance specialist agent. Use get_exchange_rate and calculate tools for all currency conversions and math. Show the rate and converted amount clearly. Be concise.',
+    tools: ['get_exchange_rate','calculate']
+  },
+  time: {
+    id: 'agent-time',
+    prompt: 'You are a time specialist agent. Use get_time to fetch current local times for any cities requested. If two cities are given, also state the time difference between them. Be concise.',
+    tools: ['get_time']
+  }
+};
+
+function toggleAgent(id){
+  const body = document.getElementById(id+'-body');
+  if(body) body.classList.toggle('open');
+}
+
+function resetAgentPanels(){
+  ['weather','finance','time'].forEach(a => {
+    const s = document.getElementById('agent-'+a+'-status');
+    const b = document.getElementById('agent-'+a+'-body');
+    const p = document.getElementById('agent-'+a);
+    if(s) s.textContent = 'idle';
+    if(b){ b.innerHTML=''; b.classList.remove('open'); }
+    if(p) p.style.borderColor = '';
+  });
+}
+
+function setAgentStatus(agent, status, color){
+  const el = document.getElementById('agent-'+agent+'-status');
+  const panel = document.getElementById('agent-'+agent);
+  if(el) el.textContent = status;
+  if(panel && color) panel.style.borderColor = color;
+}
+
+function appendAgentStep(agent, text){
+  const body = document.getElementById('agent-'+agent+'-body');
+  if(!body) return;
+  body.classList.add('open');
+  const el = document.createElement('div');
+  el.className = 'agent-step';
+  el.textContent = text;
+  body.appendChild(el);
+}
+
+function setAgentResult(agent, result){
+  const body = document.getElementById('agent-'+agent+'-body');
+  if(!body) return;
+  const el = document.createElement('div');
+  el.className = 'agent-result';
+  el.textContent = result;
+  body.appendChild(el);
+}
+
+async function runSpecialist(agentKey, query){
+  const spec = SPECIALISTS[agentKey];
+  const colors = {weather:'#c9a96e', finance:'#7eb8a0', time:'#a08ec9'};
+  setAgentStatus(agentKey, 'running...', colors[agentKey]);
+  appendAgentStep(agentKey, '→ received sub-task: '+query.substring(0,60));
+
+  const toolDefs = spec.tools.map(t => TOOLS_DEFS[t]);
+  const contents = [{role:'user', parts:[{text: query}]}];
+  let result = '';
+
+  try {
+    let iters = 0;
+    while(iters < 5){
+      iters++;
+      const res = await fetch(WORKER_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          system_instruction:{parts:[{text: spec.prompt}]},
+          contents,
+          tools:[{function_declarations: toolDefs}],
+          generationConfig:{temperature:0.1}
+        })
+      });
+      const data = await res.json();
+      if(data.error){ result = 'Error: '+data.error.message; break; }
+
+      const parts = data.candidates?.[0]?.content?.parts || [];
+      const toolCalls = parts.filter(p=>p.functionCall);
+      const textParts = parts.filter(p=>p.text);
+
+      if(textParts.length && !toolCalls.length){
+        result = textParts.map(p=>p.text).join('\n');
+        break;
+      }
+
+      contents.push({role:'model', parts});
+      const toolResults = [];
+      for(const part of toolCalls){
+        const fn = part.functionCall;
+        appendAgentStep(agentKey, '→ called '+fn.name+'('+JSON.stringify(fn.args)+')');
+        const r = executeTool(fn.name, fn.args);
+        appendAgentStep(agentKey, '← '+r);
+        toolResults.push({functionResponse:{name:fn.name, response:{result:r}}});
+      }
+      contents.push({role:'user', parts: toolResults});
+    }
+  } catch(e){ result = 'Error: '+e.message; }
+
+  setAgentStatus(agentKey, 'done', colors[agentKey]);
+  setAgentResult(agentKey, result);
+  return {agent: agentKey, result};
+}
+
+async function runOrchestrator(){
+  const q = document.getElementById('q').value.trim();
+  if(!q) return;
+
+  const btn = document.getElementById('ask-btn');
+  btn.disabled=true; btn.textContent='Running...';
+
+  resetAgentPanels();
+  document.getElementById('trace-card').style.display = 'none';
+  document.getElementById('answer-card').style.display = 'none';
+
+  // Show orchestrator trace
+  document.getElementById('log').innerHTML = '';
+  document.getElementById('trace-card').style.display = 'block';
+  addStep('decide','Orchestrator — decomposing goal into sub-tasks','→ dispatching 3 specialists in parallel');
+
+  const startTime = Date.now();
+
+  // Run all specialists in parallel
+  const [weatherRes, financeRes, timeRes] = await Promise.all([
+    runSpecialist('weather', q),
+    runSpecialist('finance', q),
+    runSpecialist('time', q)
+  ]);
+
+  const elapsed1 = ((Date.now()-startTime)/1000).toFixed(1);
+  addStep('observe',`All 3 specialists completed in ${elapsed1}s`,'→ results collected, sending to orchestrator for synthesis');
+
+  // Synthesis call
+  addStep('reason','Orchestrator synthesising all results...','→ final API call combining specialist outputs');
+
+  const synthesisPrompt = `You are an orchestrator. Three specialist agents have completed their work. Synthesise their results into a clear, well-structured final answer for the user.
+
+User question: ${q}
+
+Weather Agent result:
+${weatherRes.result}
+
+Finance Agent result:
+${financeRes.result}
+
+Time Agent result:
+${timeRes.result}
+
+Write a comprehensive, friendly briefing that combines all the above information. Use clear sections.`;
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        contents:[{role:'user', parts:[{text: synthesisPrompt}]}],
+        generationConfig:{temperature:0.3}
+      })
+    });
+    const data = await res.json();
+    const finalText = data.candidates?.[0]?.content?.parts?.filter(p=>p.text).map(p=>p.text).join('\n') || 'Could not synthesise results.';
+
+    addStep('act','Orchestrator — final answer ready','→ loop complete');
+    document.getElementById('answer-card').style.display='block';
+    document.getElementById('answer').textContent = finalText;
+
+    const elapsed = ((Date.now()-startTime)/1000).toFixed(1);
+    document.getElementById('stats-row').innerHTML =
+      `<div class="stat">agents <span>3</span></div>`+
+      `<div class="stat">parallel calls <span>3</span></div>`+
+      `<div class="stat">time <span>${elapsed}s</span></div>`+
+      `<div class="stat">stage <span>4</span></div>`;
+  } catch(e){
+    addStep('decide','Synthesis error: '+e.message, null);
+  }
+
+  btn.disabled=false; btn.textContent='Ask';
+}
+
 document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")runAgent();});
+
+// ── Stage 4 — Multi-agent ────────────────────────────────────────
+const SPECIALISTS = {
+  weather: {
+    name: 'Weather Agent',
+    icon: 'W',
+    color: 'var(--decide)',
+    systemPrompt: 'You are a specialist weather agent. Use the get_weather tool to fetch weather data for any city requested. Always use the tool — never guess. Return just the facts clearly.',
+    tools: ['get_weather']
+  },
+  finance: {
+    name: 'Finance Agent',
+    icon: 'F',
+    color: 'var(--observe)',
+    systemPrompt: 'You are a specialist finance agent. Use get_exchange_rate and calculate tools to handle all currency conversions and math. Always use tools — never guess rates. Return clear numeric results.',
+    tools: ['get_exchange_rate','calculate']
+  },
+  time: {
+    name: 'Time Agent',
+    icon: 'T',
+    color: 'var(--reason)',
+    systemPrompt: 'You are a specialist time agent. Use the get_time tool to fetch current local time for any city. Calculate time differences if asked. Always use the tool.',
+    tools: ['get_time','calculate']
+  }
+};
+
+function toggleSA(name){
+  const body=document.getElementById('sa-'+name+'-body');
+  if(body) body.classList.toggle('open');
+}
+
+function resetSubAgents(){
+  ['weather','finance','time'].forEach(n=>{
+    const s=document.getElementById('sa-'+n+'-status');
+    const b=document.getElementById('sa-'+n+'-body');
+    if(s) s.textContent='waiting';
+    if(b){ b.innerHTML=''; b.classList.remove('open'); }
+    const card=document.getElementById('sa-'+n);
+    if(card) card.style.borderColor='var(--border)';
+  });
+}
+
+function saLog(name, text, meta){
+  const body=document.getElementById('sa-'+name+'-body');
+  if(!body) return;
+  body.classList.add('open');
+  const el=document.createElement('div');
+  el.className='sub-step';
+  el.innerHTML=text+(meta?` <span>${meta}</span>`:'');
+  body.appendChild(el);
+}
+
+function saStatus(name, text, color){
+  const s=document.getElementById('sa-'+name+'-status');
+  const card=document.getElementById('sa-'+name);
+  if(s) s.textContent=text;
+  if(card && color) card.style.borderColor=color;
+}
+
+async function runSpecialist(specialistKey, subQuery){
+  const spec=SPECIALISTS[specialistKey];
+  const toolDefs=spec.tools.map(t=>TOOLS_DEFS[t]);
+  saStatus(specialistKey,'running…','var(--accent)');
+  saLog(specialistKey,`Task: "${subQuery.substring(0,60)}${subQuery.length>60?'…':''}"`);
+
+  const contents=[{role:"user",parts:[{text:subQuery}]}];
+  let result='No result';
+  let toolCallCount=0;
+
+  try{
+    let iters=0;
+    while(iters<5){
+      iters++;
+      const res=await fetch(WORKER_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:spec.systemPrompt}]},
+          contents,
+          tools:[{function_declarations:toolDefs}],
+          generationConfig:{temperature:0.1}
+        })
+      });
+      const data=await res.json();
+      if(data.error){saLog(specialistKey,'Error: '+data.error.message);break;}
+      const candidate=data.candidates?.[0];
+      if(!candidate) break;
+      const parts=candidate.content?.parts||[];
+      const toolCalls=parts.filter(p=>p.functionCall);
+      const textParts=parts.filter(p=>p.text);
+      if(textParts.length && !toolCalls.length){
+        result=textParts.map(p=>p.text).join(' ');
+        saLog(specialistKey,'Done: '+result.substring(0,80)+(result.length>80?'…':''));
+        break;
+      }
+      contents.push({role:"model",parts});
+      const toolResultParts=[];
+      for(const part of toolCalls){
+        const fn=part.functionCall;
+        toolCallCount++;
+        saLog(specialistKey,`Called ${fn.name}`,'→ '+JSON.stringify(fn.args).substring(0,40));
+        const r=executeTool(fn.name,fn.args);
+        saLog(specialistKey,'Got: '+r.substring(0,70));
+        toolResultParts.push({functionResponse:{name:fn.name,response:{result:r}}});
+      }
+      contents.push({role:"user",parts:toolResultParts});
+    }
+  }catch(e){
+    saLog(specialistKey,'Error: '+e.message);
+  }
+
+  saStatus(specialistKey,`done (${toolCallCount} calls)`,'var(--observe)');
+  return {specialist:specialistKey, name:spec.name, result, toolCallCount};
+}
+
+async function runMultiAgent(){
+  const q=document.getElementById("q").value.trim();
+  if(!q) return;
+
+  const btn=document.getElementById("ask-btn");
+  btn.disabled=true; btn.textContent="Running…";
+
+  document.getElementById("log").innerHTML="";
+  document.getElementById("trace-card").style.display="block";
+  document.getElementById("answer-card").style.display="none";
+  document.getElementById("stats-row").innerHTML="";
+  iterationCount=1;
+  updateIterCount();
+  resetSubAgents();
+
+  const startTime=Date.now();
+  addStep("decide","Orchestrator: analysing goal and assigning specialists…","→ dispatching Weather, Finance, Time agents in parallel");
+
+  try{
+    // Step 1 — orchestrator decomposes the goal
+    const orchRes=await fetch(WORKER_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:'You are an orchestrator AI. Break the user's query into exactly 3 sub-tasks, one for each specialist. Reply ONLY with valid JSON in this exact format with no markdown:
+{"weather":"<weather sub-task>","finance":"<finance sub-task>","time":"<time sub-task>"}
+If a specialist is not needed, write "none" as its value.'}]},
+        contents:[{role:"user",parts:[{text:q}]}],
+        generationConfig:{temperature:0.1}
+      })
+    });
+
+    const orchData=await orchRes.json();
+    if(orchData.error){addStep("decide","Orchestrator error: "+orchData.error.message,null);btn.disabled=false;btn.textContent="Ask";return;}
+
+    let tasks={weather:"none",finance:"none",time:"none"};
+    try{
+      const raw=orchData.candidates?.[0]?.content?.parts?.[0]?.text||"{}";
+      const clean=raw.replace(/```json|```/g,"").trim();
+      tasks={...tasks,...JSON.parse(clean)};
+    }catch(e){
+      // fallback — give each specialist the full query
+      tasks={weather:q,finance:q,time:q};
+    }
+
+    addStep("observe",`Tasks assigned: weather="${tasks.weather.substring(0,40)}…"`,null);
+    addStep("reason","Dispatching all specialists simultaneously…","→ Promise.all() — parallel execution");
+
+    // Step 2 — run all active specialists in parallel
+    const activeSpecs=Object.entries(tasks).filter(([,v])=>v!=="none");
+    const promises=activeSpecs.map(([key,task])=>runSpecialist(key,task));
+    const results=await Promise.all(promises);
+
+    const elapsed1=((Date.now()-startTime)/1000).toFixed(1);
+    addStep("act",`All ${results.length} specialists completed in ${elapsed1}s`,"→ handing results to orchestrator for synthesis");
+
+    // Step 3 — orchestrator synthesises
+    const synthesis=results.map(r=>`${r.name} result: ${r.result}`).join("
+
+");
+    const synthRes=await fetch(WORKER_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:"You are a synthesis orchestrator. Combine the specialist results below into a clear, well-structured final answer for the user. Be warm and practical."}]},
+        contents:[
+          {role:"user",parts:[{text:`Original query: ${q}
+
+Specialist results:
+${synthesis}
+
+Please synthesise these into a complete answer.`}]}
+        ],
+        generationConfig:{temperature:0.3}
+      })
+    });
+
+    const synthData=await synthRes.json();
+    if(synthData.error){addStep("decide","Synthesis error: "+synthData.error.message,null);btn.disabled=false;btn.textContent="Ask";return;}
+
+    const finalText=synthData.candidates?.[0]?.content?.parts?.filter(p=>p.text).map(p=>p.text).join("
+")||"No synthesis result";
+    const totalCalls=results.reduce((s,r)=>s+r.toolCallCount,0);
+    const elapsed=((Date.now()-startTime)/1000).toFixed(1);
+
+    addStep("reason","Orchestrator synthesis complete","→ all specialist results combined");
+    document.getElementById("answer-card").style.display="block";
+    document.getElementById("answer").textContent=finalText;
+    document.getElementById("stats-row").innerHTML=
+      `<div class="stat">specialists <span>${results.length}</span></div>`+
+      `<div class="stat">tool calls <span>${totalCalls}</span></div>`+
+      `<div class="stat">time <span>${elapsed}s</span></div>`+
+      `<div class="stat">stage <span>4</span></div>`;
+
+  }catch(e){
+    addStep("decide","Error: "+e.message,null);
+  }
+
+  btn.disabled=false;
+  btn.textContent="Ask";
+}
 </script>
 </body>
 </html>
