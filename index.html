@@ -5,154 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DORA — Decide · Observe · Reason · Act</title>
 <meta name="description" content="Learn agentic AI hands-on. Watch an AI agent decide, observe, reason, and act in real time across 4 progressive stages.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://dora.buildjoynow.com">
 <meta property="og:title" content="DORA — Decide · Observe · Reason · Act">
 <meta property="og:description" content="Learn agentic AI hands-on. Watch an AI agent decide, observe, reason, and act in real time.">
-<meta property="og:image" content="https://dora.buildjoynow.com/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DORA — Decide · Observe · Reason · Act">
-<meta name="twitter:image" content="https://dora.buildjoynow.com/og.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230f0f0f'/><text x='32' y='44' font-family='serif' font-size='32' font-weight='700' fill='white' text-anchor='middle'>D</text></svg>">
+<meta property="og:image" content="https://dora.buildjoynow.com/og.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0a0a;--surface:#111111;--surface2:#1a1a1a;--border:#2a2a2a;
+  --bg:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--border:#2a2a2a;
   --text:#f0ede8;--muted:#9a9690;--accent:#e8d5a3;
   --decide:#c9a96e;--observe:#7eb8a0;--reason:#a08ec9;--act:#c97e7e;
-  --font-display:'DM Serif Display',serif;--font-body:'Outfit',sans-serif;--font-mono:'DM Mono',monospace;
+  --fd:'DM Serif Display',serif;--fb:'Outfit',sans-serif;--fm:'DM Mono',monospace;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:400;line-height:1.6;min-height:100vh}
-
-/* hero */
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-weight:400;line-height:1.6;min-height:100vh}
 .hero{padding:2.5rem 1.5rem 1.5rem;max-width:680px;margin:0 auto;text-align:center}
-.logo-wrap{display:flex;justify-content:center;margin-bottom:1.5rem}
-.logo-svg{width:64px;height:64px}
-.hero-title{font-family:var(--font-display);font-size:clamp(2.4rem,7vw,3.8rem);line-height:1;letter-spacing:-.02em;margin-bottom:.6rem}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:1.2rem}
+.hero-title{font-family:var(--fd);font-size:clamp(2.4rem,7vw,3.8rem);line-height:1;letter-spacing:-.02em;margin-bottom:.6rem}
 .hero-title em{font-style:italic;color:var(--accent)}
-.acronym-row{display:flex;justify-content:center;gap:clamp(10px,3vw,24px);margin:1.2rem 0 .8rem}
-.letter-pill{display:flex;flex-direction:column;align-items:center;gap:4px}
-.letter-char{font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2rem);font-weight:700;width:clamp(40px,9vw,56px);height:clamp(40px,9vw,56px);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid}
-.letter-char.d{background:rgba(201,169,110,.12);color:var(--decide);border-color:rgba(201,169,110,.25)}
-.letter-char.o{background:rgba(126,184,160,.12);color:var(--observe);border-color:rgba(126,184,160,.25)}
-.letter-char.r{background:rgba(160,142,201,.12);color:var(--reason);border-color:rgba(160,142,201,.25)}
-.letter-char.a{background:rgba(201,126,126,.12);color:var(--act);border-color:rgba(201,126,126,.25)}
-.letter-word{font-size:clamp(9px,2vw,11px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-weight:500}
-.hero-sub{font-size:clamp(13px,3vw,15px);color:#b8b4ae;max-width:420px;margin:0 auto 1.5rem}
-
-/* stage tabs */
-.stage-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
-.stage-tab{padding:6px 16px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:var(--font-body)}
-.stage-tab:hover{border-color:var(--muted)}
-.stage-tab.active{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
-.stage-tab.locked{opacity:.35;cursor:not-allowed}
-
-/* stage explainer */
-.explainer{background:var(--surface2);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#b8b4ae;line-height:1.6;border-left:3px solid}
-.explainer.s1{border-color:var(--decide)}
-.explainer.s2{border-color:var(--observe)}
-.explainer.s3{border-color:var(--reason)}
-.explainer.s4{border-color:var(--act)}
-/* sub-agent panels */
-.sub-agents{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-.sub-agent{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.sub-agent-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer}
-.sub-agent-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;font-family:var(--font-mono)}
-.sub-agent-name{font-size:13px;font-weight:500;flex:1}
-.sub-agent-status{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
-.sub-agent-body{padding:0 14px 10px;display:none}
-.sub-agent-body.open{display:block}
-.sub-step{font-size:12px;color:#b0ada8;padding:3px 0;border-bottom:1px solid var(--border);line-height:1.5}
-.sub-step:last-child{border-bottom:none}
-.sub-step span{font-family:var(--font-mono);color:var(--muted);font-size:11px}
-.orch-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--act);font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.parallel-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(201,126,126,.12);color:var(--act);border:1px solid rgba(201,126,126,.2)}
-
-/* panel */
+.acro-row{display:flex;justify-content:center;gap:clamp(10px,3vw,24px);margin:1rem 0 .8rem}
+.lp{display:flex;flex-direction:column;align-items:center;gap:4px}
+.lc{font-family:var(--fd);font-size:clamp(1.4rem,4vw,2rem);font-weight:700;width:clamp(40px,9vw,56px);height:clamp(40px,9vw,56px);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid}
+.lc.d{background:rgba(201,169,110,.12);color:var(--decide);border-color:rgba(201,169,110,.25)}
+.lc.o{background:rgba(126,184,160,.12);color:var(--observe);border-color:rgba(126,184,160,.25)}
+.lc.r{background:rgba(160,142,201,.12);color:var(--reason);border-color:rgba(160,142,201,.25)}
+.lc.a{background:rgba(201,126,126,.12);color:var(--act);border-color:rgba(201,126,126,.25)}
+.lw{font-size:clamp(9px,2vw,11px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.hero-sub{font-size:clamp(13px,3vw,15px);color:#b8b4ae;max-width:420px;margin:0 auto 1.2rem}
+.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.tab{padding:6px 16px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--fb);transition:all .15s}
+.tab:hover{border-color:var(--muted);color:var(--text)}
+.tab.active{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
+.tab.locked{opacity:.35;cursor:not-allowed;pointer-events:none}
 .panel{max-width:680px;margin:0 auto;padding:0 1rem 4rem}
+.ex{background:var(--surface2);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#b8b4ae;line-height:1.6;border-left:3px solid}
+.ex.s1{border-color:var(--decide)} .ex.s2{border-color:var(--observe)} .ex.s3{border-color:var(--reason)} .ex.s4{border-color:var(--act)}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:12px}
-
-/* input */
-.input-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
-.input-row{display:flex;gap:8px}
-.input-row input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
-.input-row input:focus{border-color:var(--accent)}
-.input-row input::placeholder{color:#6a6660}
-.ask-btn{background:var(--accent);color:#0a0a0a;border:none;border-radius:10px;padding:10px 18px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity .2s}
-.ask-btn:hover{opacity:.85}
-.ask-btn:disabled{opacity:.35;cursor:not-allowed}
-
-/* chips */
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
+.irow{display:flex;gap:8px}
+.irow input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--fb);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.irow input:focus{border-color:var(--accent)}
+.irow input::placeholder{color:#6a6660}
+.abtn{background:var(--accent);color:#0a0a0a;border:none;border-radius:10px;padding:10px 18px;font-family:var(--fb);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.abtn:disabled{opacity:.35;cursor:not-allowed}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.chip{font-size:12px;padding:4px 10px;border-radius:8px;background:var(--surface2);color:#a8a49e;border:1px solid var(--border);cursor:pointer;font-family:var(--font-mono);transition:border-color .15s,color .15s}
+.chip{font-size:12px;padding:4px 10px;border-radius:8px;background:var(--surface2);color:#a8a49e;border:1px solid var(--border);cursor:pointer;font-family:var(--fm)}
 .chip:hover{border-color:var(--accent);color:var(--accent)}
-
-/* trace */
-.trace-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.iter-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface2);color:var(--muted);font-family:var(--font-mono);border:1px solid var(--border)}
+.tlbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ibadge{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface2);color:var(--muted);font-family:var(--fm);border:1px solid var(--border)}
 .step{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .step:last-child{border-bottom:none}
-.step-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;font-family:var(--font-mono)}
-.si-decide{background:rgba(201,169,110,.15);color:var(--decide)}
-.si-observe{background:rgba(126,184,160,.15);color:var(--observe)}
-.si-reason{background:rgba(160,142,201,.15);color:var(--reason)}
-.si-act{background:rgba(201,126,126,.15);color:var(--act)}
-.step-body{flex:1;min-width:0}
-.step-title{font-size:13px;color:#e0ddd8;line-height:1.5}
-.step-meta{font-size:11px;color:#8a8680;font-family:var(--font-mono);margin-top:2px;word-break:break-all}
-
-/* loop separator */
-.loop-sep{display:flex;align-items:center;gap:8px;padding:6px 0;margin:2px 0}
-.loop-line{flex:1;height:1px;background:var(--border)}
-.loop-label{font-size:10px;color:var(--muted);font-family:var(--font-mono);white-space:nowrap}
-
-/* answer */
-.answer-box{background:var(--surface2);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.8;color:var(--text);border-left:3px solid var(--observe)}
-
-/* stats row */
-.stats-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.stat{background:var(--surface2);border-radius:8px;padding:6px 12px;font-size:12px;font-family:var(--font-mono);color:var(--muted)}
+.si{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;font-family:var(--fm)}
+.si-d{background:rgba(201,169,110,.15);color:var(--decide)}
+.si-o{background:rgba(126,184,160,.15);color:var(--observe)}
+.si-r{background:rgba(160,142,201,.15);color:var(--reason)}
+.si-a{background:rgba(201,126,126,.15);color:var(--act)}
+.si-m{background:rgba(160,142,201,.15);color:var(--reason)}
+.sb{flex:1;min-width:0}
+.st{font-size:13px;color:#e0ddd8;line-height:1.5}
+.sm{font-size:11px;color:#8a8680;font-family:var(--fm);margin-top:2px;word-break:break-all}
+.lsep{display:flex;align-items:center;gap:8px;padding:6px 0}
+.ll{flex:1;height:1px;background:var(--border)}
+.lt{font-size:10px;color:var(--muted);font-family:var(--fm);white-space:nowrap}
+.ans{background:var(--surface2);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.8;color:var(--text);border-left:3px solid var(--observe)}
+.stats{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.stat{background:var(--surface2);border-radius:8px;padding:6px 12px;font-size:12px;font-family:var(--fm);color:var(--muted)}
 .stat span{color:var(--text)}
-
-/* memory panel */
-.memory-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:12px}
-.memory-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.memory-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--reason);font-weight:500;display:flex;align-items:center;gap:6px}
-.memory-dot{width:7px;height:7px;border-radius:50%;background:var(--reason)}
-.memory-clear{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font-mono);padding:0;transition:color .2s}
-.memory-clear:hover{color:var(--act)}
-.memory-empty{font-size:13px;color:var(--muted);font-style:italic}
-.memory-list{display:flex;flex-direction:column;gap:6px}
-.memory-item{display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:var(--surface2);border-radius:8px;border-left:2px solid var(--reason)}
-.memory-key{font-size:11px;color:var(--reason);font-family:var(--font-mono);flex-shrink:0;margin-top:1px}
-.memory-val{font-size:13px;color:#d0cdc8;line-height:1.4}
-.memory-time{font-size:10px;color:var(--muted);font-family:var(--font-mono);margin-top:2px}
-.memory-injected{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:8px;padding:6px 10px;background:rgba(160,142,201,.06);border-radius:6px;border:1px dashed rgba(160,142,201,.2)}
+/* memory */
+.mem-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:12px}
+.mem-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mem-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--reason);font-weight:500;display:flex;align-items:center;gap:6px}
+.mem-dot{width:7px;height:7px;border-radius:50%;background:var(--reason)}
+.mem-clr{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--fm)}
+.mem-empty{font-size:13px;color:var(--muted);font-style:italic}
+.mem-item{display:flex;gap:8px;padding:6px 10px;background:var(--surface2);border-radius:8px;border-left:2px solid var(--reason);margin-bottom:6px}
+.mem-val{font-size:13px;color:#d0cdc8}
+.mem-key{font-size:11px;color:var(--muted);font-family:var(--fm);margin-top:2px}
+.mem-inj{font-size:11px;color:var(--muted);font-family:var(--fm);margin-top:8px;padding:6px 10px;background:rgba(160,142,201,.06);border-radius:6px;border:1px dashed rgba(160,142,201,.2)}
+/* multi-agent */
+.orch-lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--act);font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.par-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(201,126,126,.12);color:var(--act);border:1px solid rgba(201,126,126,.2)}
+.sa-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.sa{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sa-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer}
+.sa-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;font-family:var(--fm)}
+.sa-name{font-size:13px;font-weight:500;flex:1}
+.sa-status{font-size:11px;color:var(--muted);font-family:var(--fm)}
+.sa-body{padding:0 14px 10px;display:none}
+.sa-body.open{display:block}
+.sa-step{font-size:12px;color:#b0ada8;padding:3px 0;border-bottom:1px solid var(--border);line-height:1.5}
+.sa-step:last-child{border-bottom:none}
+.sa-step span{font-family:var(--fm);color:var(--muted);font-size:11px}
+/* footer */
 .footer{text-align:center;font-size:12px;color:var(--muted);padding:2rem;border-top:1px solid var(--border)}
 .footer em{color:var(--accent);font-style:normal}
-
-/* stage 4 sub-agents */
-.agents-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-.agent-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.agent-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none}
-.agent-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
-.agent-name{font-size:13px;font-weight:500;flex:1}
-.agent-status{font-size:11px;font-family:var(--font-mono);color:var(--muted)}
-.agent-body{padding:0 14px 10px;display:none}
-.agent-body.open{display:block}
-.agent-step{font-size:12px;color:#b0ada8;padding:3px 0;border-bottom:1px solid var(--border);line-height:1.5}
-.agent-step:last-child{border-bottom:none}
-.agent-result{font-size:12px;color:var(--text);background:var(--surface2);border-radius:6px;padding:8px 10px;margin-top:6px;line-height:1.6}
-.parallel-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(201,126,126,.12);color:var(--act);border:1px solid rgba(201,126,126,.2);font-family:var(--font-mono)}
-.explainer.s4{border-color:var(--act)}
-
-/* animations */
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn .3s ease forwards}
+.fi{animation:fadeIn .3s ease forwards}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .pulse{animation:pulse 1.2s ease infinite}
 </style>
@@ -161,10 +109,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 
 <div class="hero">
   <div class="logo-wrap">
-    <svg class="logo-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="120" height="120" rx="26" fill="#0e0e0e"/>
       <circle cx="60" cy="60" r="40" stroke="#1e1e1e" stroke-width="1"/>
-      <circle cx="60" cy="60" r="28" stroke="#181818" stroke-width="0.5" stroke-dasharray="2 3"/>
       <path d="M60 20 A40 40 0 0 1 100 60" stroke="#c9a96e" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
       <path d="M100 60 A40 40 0 0 1 60 100" stroke="#7eb8a0" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
       <path d="M60 100 A40 40 0 0 1 20 60" stroke="#a08ec9" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8"/>
@@ -185,927 +132,458 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
       <circle cx="60" cy="60" r="2.5" fill="#e8d5a3"/>
     </svg>
   </div>
-
-  <div class="acronym-row">
-    <div class="letter-pill"><div class="letter-char d">D</div><div class="letter-word">Decide</div></div>
-    <div class="letter-pill"><div class="letter-char o">O</div><div class="letter-word">Observe</div></div>
-    <div class="letter-pill"><div class="letter-char r">R</div><div class="letter-word">Reason</div></div>
-    <div class="letter-pill"><div class="letter-char a">A</div><div class="letter-word">Act</div></div>
+  <div class="acro-row">
+    <div class="lp"><div class="lc d">D</div><div class="lw">Decide</div></div>
+    <div class="lp"><div class="lc o">O</div><div class="lw">Observe</div></div>
+    <div class="lp"><div class="lc r">R</div><div class="lw">Reason</div></div>
+    <div class="lp"><div class="lc a">A</div><div class="lw">Act</div></div>
   </div>
-
   <h1 class="hero-title">Learn <em>agentic</em> AI</h1>
-  <p class="hero-sub">Watch a real AI agent loop through decisions, tools, and results — step by step, in real time.</p>
-
-  <div class="stage-tabs">
-    <button class="stage-tab active" id="tab-1" onclick="switchStage(1)">Stage 1 · Single tool</button>
-    <button class="stage-tab" id="tab-2" onclick="switchStage(2)">Stage 2 · ReAct loop</button>
-    <button class="stage-tab" id="tab-3" onclick="switchStage(3)">Stage 3 · Memory</button>
-    <button class="stage-tab" id="tab-4" onclick="switchStage(4)">Stage 4 · Multi-agent</button>
+  <p class="hero-sub">Watch a real AI agent loop through decisions, tools, and results in real time.</p>
+  <div class="tabs">
+    <button class="tab active" id="tab-1" onclick="switchStage(1)">Stage 1 - Single tool</button>
+    <button class="tab" id="tab-2" onclick="switchStage(2)">Stage 2 - ReAct loop</button>
+    <button class="tab" id="tab-3" onclick="switchStage(3)">Stage 3 - Memory</button>
+    <button class="tab" id="tab-4" onclick="switchStage(4)">Stage 4 - Multi-agent</button>
   </div>
 </div>
 
 <div class="panel">
 
-  <!-- Stage explainers — static HTML, never touched by JS innerHTML -->
-  <div class="explainer s1" id="ex-1" style="display:block"><strong style="color:var(--decide)">Stage 1 &mdash; Single tool use.</strong> The agent picks one tool, calls it once, observes the result, and answers. The loop always runs exactly twice.</div>
-  <div class="explainer s2" id="ex-2" style="display:none"><strong style="color:var(--observe)">Stage 2 &mdash; ReAct loop.</strong> The agent reasons and acts in multiple rounds, chaining tools in sequence until the goal is fully complete. Watch the iteration counter climb.</div>
-  <div class="explainer s3" id="ex-3" style="display:none"><strong style="color:var(--reason)">Stage 3 &mdash; Memory.</strong> The agent remembers facts across sessions via localStorage. Saved facts are injected into the next conversation automatically.</div>
-  <div class="explainer s4" id="ex-4" style="display:none"><strong style="color:var(--act)">Stage 4 &mdash; Multi-agent.</strong> One orchestrator delegates to specialist agents running in parallel. Each specialist handles one domain. Results are synthesised into a final answer.</div>
+  <div class="ex s1" id="ex-1"><strong style="color:var(--decide)">Stage 1 - Single tool use.</strong> The agent picks one tool, calls it once, observes the result, and answers. The loop always runs exactly twice.</div>
+  <div class="ex s2" id="ex-2" style="display:none"><strong style="color:var(--observe)">Stage 2 - ReAct loop.</strong> The agent reasons and acts in multiple rounds, chaining tools in sequence until the goal is complete. Watch the iteration counter climb.</div>
+  <div class="ex s3" id="ex-3" style="display:none"><strong style="color:var(--reason)">Stage 3 - Memory.</strong> The agent remembers facts across sessions via localStorage. Saved facts inject into the next conversation automatically.</div>
+  <div class="ex s4" id="ex-4" style="display:none"><strong style="color:var(--act)">Stage 4 - Multi-agent.</strong> One orchestrator delegates to specialist agents running in parallel. Each specialist handles one domain. Results are synthesised into a final answer.</div>
 
-  <!-- Memory panel (Stage 3 only) -->
-  <div class="memory-panel" id="memory-panel" style="display:none">
-    <div class="memory-header">
-      <div class="memory-title"><div class="memory-dot pulse"></div>Agent memory</div>
-      <button class="memory-clear" onclick="clearMemory()">clear all</button>
+  <div class="mem-panel" id="mem-panel" style="display:none">
+    <div class="mem-hdr">
+      <div class="mem-title"><div class="mem-dot pulse"></div>Agent memory</div>
+      <button class="mem-clr" onclick="clearMemory()">clear all</button>
     </div>
-    <div id="memory-body"><div class="memory-empty">No memories yet. Ask something — the agent will remember key facts.</div></div>
-    <div class="memory-injected" id="memory-injected" style="display:none"></div>
+    <div id="mem-body"><div class="mem-empty">No memories yet. Ask something to start building memory.</div></div>
+    <div class="mem-inj" id="mem-inj" style="display:none"></div>
   </div>
 
-  <!-- Agents panel (Stage 4 only) -->
-  <div id="agents-panel" style="display:none;margin-bottom:12px">
-    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--act);font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:8px">
-      Specialist agents
-      <span class="parallel-badge">parallel</span>
-    </div>
-    <div class="agents-grid">
-      <div class="agent-panel" id="agent-weather">
-        <div class="agent-header" onclick="toggleAgent('agent-weather')">
-          <div class="agent-icon" style="background:rgba(201,169,110,.15);color:var(--decide)">W</div>
-          <div class="agent-name">Weather Agent</div>
-          <div class="agent-status" id="agent-weather-status">idle</div>
+  <div id="sa-wrap" style="display:none">
+    <div class="orch-lbl">Specialist agents <span class="par-badge">parallel</span></div>
+    <div class="sa-wrap" id="sa-list">
+      <div class="sa" id="sa-weather">
+        <div class="sa-hdr" onclick="toggleSA('weather')">
+          <div class="sa-icon" style="background:rgba(201,169,110,.15);color:var(--decide)">W</div>
+          <div class="sa-name">Weather Agent</div>
+          <div class="sa-status" id="sa-weather-st">waiting</div>
         </div>
-        <div class="agent-body" id="agent-weather-body"></div>
+        <div class="sa-body" id="sa-weather-body"></div>
       </div>
-      <div class="agent-panel" id="agent-finance">
-        <div class="agent-header" onclick="toggleAgent('agent-finance')">
-          <div class="agent-icon" style="background:rgba(126,184,160,.15);color:var(--observe)">F</div>
-          <div class="agent-name">Finance Agent</div>
-          <div class="agent-status" id="agent-finance-status">idle</div>
+      <div class="sa" id="sa-finance">
+        <div class="sa-hdr" onclick="toggleSA('finance')">
+          <div class="sa-icon" style="background:rgba(126,184,160,.15);color:var(--observe)">F</div>
+          <div class="sa-name">Finance Agent</div>
+          <div class="sa-status" id="sa-finance-st">waiting</div>
         </div>
-        <div class="agent-body" id="agent-finance-body"></div>
+        <div class="sa-body" id="sa-finance-body"></div>
       </div>
-      <div class="agent-panel" id="agent-time">
-        <div class="agent-header" onclick="toggleAgent('agent-time')">
-          <div class="agent-icon" style="background:rgba(160,142,201,.15);color:var(--reason)">T</div>
-          <div class="agent-name">Time Agent</div>
-          <div class="agent-status" id="agent-time-status">idle</div>
+      <div class="sa" id="sa-time">
+        <div class="sa-hdr" onclick="toggleSA('time')">
+          <div class="sa-icon" style="background:rgba(160,142,201,.15);color:var(--reason)">T</div>
+          <div class="sa-name">Time Agent</div>
+          <div class="sa-status" id="sa-time-st">waiting</div>
         </div>
-        <div class="agent-body" id="agent-time-body"></div>
+        <div class="sa-body" id="sa-time-body"></div>
       </div>
     </div>
   </div>
 
-  <!-- Sub-agent panels (Stage 4 only) -->
-  <div id="sub-agents-wrap" style="display:none">
-    <div class="orch-label">Specialist agents <span class="parallel-badge">parallel</span></div>
-    <div class="sub-agents">
-      <div class="sub-agent" id="sa-weather">
-        <div class="sub-agent-header" onclick="toggleSA('weather')">
-          <div class="sub-agent-icon" style="background:rgba(201,169,110,.15);color:var(--decide)">W</div>
-          <div class="sub-agent-name">Weather Agent</div>
-          <div class="sub-agent-status" id="sa-weather-status">waiting</div>
-        </div>
-        <div class="sub-agent-body" id="sa-weather-body"></div>
-      </div>
-      <div class="sub-agent" id="sa-finance">
-        <div class="sub-agent-header" onclick="toggleSA('finance')">
-          <div class="sub-agent-icon" style="background:rgba(126,184,160,.15);color:var(--observe)">F</div>
-          <div class="sub-agent-name">Finance Agent</div>
-          <div class="sub-agent-status" id="sa-finance-status">waiting</div>
-        </div>
-        <div class="sub-agent-body" id="sa-finance-body"></div>
-      </div>
-      <div class="sub-agent" id="sa-time">
-        <div class="sub-agent-header" onclick="toggleSA('time')">
-          <div class="sub-agent-icon" style="background:rgba(160,142,201,.15);color:var(--reason)">T</div>
-          <div class="sub-agent-name">Time Agent</div>
-          <div class="sub-agent-status" id="sa-time-status">waiting</div>
-        </div>
-        <div class="sub-agent-body" id="sa-time-body"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Ask card -->
   <div class="card">
-    <div class="input-label" id="ask-label">Ask the agent</div>
-    <div class="input-row">
-      <input type="text" id="q" placeholder="e.g. What is the weather in Singapore?" />
-      <button class="ask-btn" id="ask-btn" onclick="currentStage===4 ? runOrchestrator() : runAgent()">Ask</button>
+    <div class="lbl" id="ask-lbl">Ask the agent</div>
+    <div class="irow">
+      <input type="text" id="q" placeholder="e.g. What is the weather in Singapore?"/>
+      <button class="abtn" id="ask-btn" onclick="runAgent()">Ask</button>
     </div>
     <div class="chips" id="chips">
       <span class="chip" onclick="setQ('What is the weather in Tokyo?')">Tokyo weather</span>
       <span class="chip" onclick="setQ('What is 1284 divided by 36?')">Calculator</span>
-      <span class="chip" onclick="setQ('What time is it in London right now?')">London time</span>
-      <span class="chip" onclick="setQ('Is it raining in Bangkok?')">Bangkok rain</span>
+      <span class="chip" onclick="setQ('What time is it in London?')">London time</span>
       <span class="chip" onclick="setQ('Convert 250 SGD to USD')">Currency</span>
     </div>
   </div>
 
-  <!-- Trace card -->
-  <div class="card fade-in" id="trace-card" style="display:none">
-    <div class="trace-label">
-      Agent trace — the DORA loop
-      <span class="iter-badge" id="iter-count"></span>
-    </div>
+  <div class="card fi" id="trace-card" style="display:none">
+    <div class="tlbl">Agent trace - the DORA loop <span class="ibadge" id="iter-count"></span></div>
     <div id="log"></div>
   </div>
 
-  <!-- Answer card -->
-  <div class="card fade-in" id="answer-card" style="display:none">
-    <div class="trace-label">Final answer</div>
-    <div class="answer-box" id="answer"></div>
-    <div class="stats-row" id="stats-row"></div>
+  <div class="card fi" id="ans-card" style="display:none">
+    <div class="tlbl">Final answer</div>
+    <div class="ans" id="ans"></div>
+    <div class="stats" id="stats"></div>
   </div>
 
 </div>
 
-<div class="footer">
-  built by <em>buildjoynow.com</em> · DORA v2.0 · <span id="footer-stage">Stage 1 of 4</span>
-</div>
+<div class="footer">built by <em>buildjoynow.com</em> - DORA v3.0 - <span id="footer-stage">Stage 1 of 4</span></div>
 
 <script>
-const WORKER_URL = 'https://dora.cslcs-gen.workers.dev';
-let currentStage = 1;
-let iterationCount = 0;
+const W = 'https://dora.cslcs-gen.workers.dev';
+let stage = 1, iters = 0;
 
-// ── Memory (localStorage) ────────────────────────────────────────
-const MEM_KEY = 'dora_memory_v1';
-
-function loadMemory(){
-  try{ return JSON.parse(localStorage.getItem(MEM_KEY)||'[]'); }
-  catch(e){ return []; }
-}
-
-function saveMemoryItem(key, value){
-  const mems = loadMemory();
-  const existing = mems.findIndex(m=>m.key===key);
-  const item = {key, value, time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})};
-  if(existing>=0) mems[existing]=item;
-  else mems.push(item);
-  localStorage.setItem(MEM_KEY, JSON.stringify(mems.slice(-20)));
-  renderMemory();
-}
-
-function clearMemory(){
-  localStorage.removeItem(MEM_KEY);
-  renderMemory();
-}
-
-function renderMemory(){
-  const mems = loadMemory();
-  const body = document.getElementById('memory-body');
-  const injEl = document.getElementById('memory-injected');
-  if(!body) return;
-  if(!mems.length){
-    body.innerHTML = '<div class="memory-empty">No memories yet. Ask something — the agent will remember key facts.</div>';
-    injEl.style.display='none';
-    return;
-  }
-  body.innerHTML = '<div class="memory-list">'+mems.map(m=>
-    `<div class="memory-item"><div class="memory-key">⬡</div><div><div class="memory-val">${m.value}</div><div class="memory-time">${m.key} · saved ${m.time}</div></div></div>`
-  ).join('')+'</div>';
-  injEl.style.display='block';
-  injEl.textContent = '→ injected into next system prompt: "'+mems.map(m=>m.value).join('. ')+'"';
-}
-
-function buildMemoryPrompt(){
-  const mems = loadMemory();
-  if(!mems.length) return '';
-  return '\n\nWhat you remember about the user:\n' + mems.map(m=>`- ${m.value}`).join('\n');
-}
-
-// ── Stage config ─────────────────────────────────────────────────
-const STAGE_CONFIG = {
-  1: {
-    placeholder: 'e.g. What is the weather in Singapore?',
-    chips: [
-      ['What is the weather in Tokyo?','Tokyo weather'],
-      ['What is 1284 divided by 36?','Calculator'],
-      ['What time is it in London right now?','London time'],
-      ['Is it raining in Bangkok?','Bangkok rain'],
-      ['Convert 250 SGD to USD','Currency']
-    ],
-    systemPrompt: 'You are a helpful AI agent with weather, calculator, and time tools. Use ONE tool per response — pick the most relevant one. After getting the tool result, give a friendly final answer.',
-    tools: ['get_weather','calculate','get_time'],
-    maxIter: 3,
-    footer: 'Stage 1 of 4'
+// ── Stage config ──────────────────────────────────────────────────
+const CFG = {
+  1:{
+    placeholder:'e.g. What is the weather in Singapore?',
+    chips:[['What is the weather in Tokyo?','Tokyo weather'],['What is 1284 divided by 36?','Calculator'],['What time is it in London?','London time'],['Is it raining in Bangkok?','Bangkok rain'],['Convert 250 SGD to USD','Currency']],
+    prompt:'You are a helpful AI agent. Use ONE tool per response. Give a friendly final answer after the tool result.',
+    tools:['get_weather','calculate','get_time'],
+    max:3,footer:'Stage 1 of 4'
   },
-  2: {
-    placeholder: 'e.g. Singapore weather, time and currency rate compare with Malaysia',
-    chips: [
-      ['What is the weather in KL right now, what time is it there, and how much is 300 SGD in MYR?','KL: weather + time + currency'],
-      ['Check the weather in Tokyo and tell me what time it is there right now','Tokyo weather + time'],
-      ['Convert 500 SGD to MYR and also to USD, then check the weather in Bangkok','3-tool chain'],
-      ['What is the weather in London and what time is it there? Also convert 200 SGD to GBP','London: weather + time + currency']
-    ],
-    systemPrompt: 'You are a data-fetching AI agent. You MUST use tools to answer every question — never answer from memory or general knowledge. For multi-part questions, call tools one at a time in sequence: call a tool, get the result, then call the next tool. Keep looping until you have fetched ALL the data needed. Only give a final answer after all tool calls are complete. Available tools: get_weather (weather for any city), get_time (current time in any city), calculate (any math or arithmetic), get_exchange_rate (currency conversion between SGD, MYR, USD, JPY, EUR, GBP, AUD).',
-    tools: ['get_weather','calculate','get_time','get_exchange_rate'],
-    maxIter: 8,
-    footer: 'Stage 2 of 4'
+  2:{
+    placeholder:'e.g. Singapore weather, time and currency vs Malaysia',
+    chips:[['What is the weather in KL, time there, and 300 SGD in MYR?','KL: weather + time + currency'],['Check weather in Tokyo and time there','Tokyo weather + time'],['Convert 500 SGD to MYR and USD, then weather in Bangkok','3-tool chain'],['Weather in London, time there, 200 SGD to GBP','London full briefing']],
+    prompt:'You are a data-fetching AI agent. MUST use tools - never answer from memory. For multi-part questions call tools one at a time. Keep looping until ALL data is fetched. Tools: get_weather, get_time, calculate, get_exchange_rate.',
+    tools:['get_weather','calculate','get_time','get_exchange_rate'],
+    max:8,footer:'Stage 2 of 4'
   },
-  3: {
-    placeholder: 'e.g. My name is CS and I am based in Singapore. What is the weather here?',
-    chips: [
-      ['My name is CS and I am based in Singapore. What is the weather here?','Introduce yourself'],
-      ['I usually travel to KL for work. What is the weather and time there now?','Set travel context'],
-      ['What do you remember about me?','Test memory recall'],
-      ['Check the weather in my home city','Use remembered home city']
-    ],
-    systemPrompt: 'You are a helpful AI agent with memory. You MUST use tools to fetch any real data — never guess. You also have a save_memory tool — use it to remember important facts about the user such as their name, home city, travel destinations, or preferences. Save one fact at a time with a short key. After saving memories and fetching any needed data, give a warm personalised answer that references what you know about the user.',
-    tools: ['get_weather','calculate','get_time','get_exchange_rate','save_memory'],
-    maxIter: 10,
-    footer: 'Stage 3 of 4'
+  3:{
+    placeholder:'e.g. My name is CS and I am based in Singapore. What is the weather here?',
+    chips:[['My name is CS and I am based in Singapore. What is the weather here?','Introduce yourself'],['I usually travel to KL for work. Weather and time there now?','Set travel context'],['What do you remember about me?','Test memory recall'],['Check the weather in my home city','Use remembered home city']],
+    prompt:'You are a helpful AI agent with memory. MUST use tools for real data. Use save_memory to remember facts about the user. Give warm personalised answers.',
+    tools:['get_weather','calculate','get_time','get_exchange_rate','save_memory'],
+    max:10,footer:'Stage 3 of 4'
   },
-  4: {
-    placeholder: 'e.g. I am flying from Singapore to London tomorrow. Briefing please.',
-    chips: [
-      ['I am flying from Singapore to London tomorrow. Give me a full briefing — weather both cities, time difference, and how much spending money in GBP if I bring 500 SGD.','Travel briefing'],
-      ['Compare Singapore and Tokyo — weather, current time, and 300 SGD in JPY.','SG vs Tokyo briefing'],
-      ['I am heading to Dubai. Weather there, time now, and 400 SGD in AED.','Dubai briefing'],
-      ['Weekend trip to Bangkok — weather, local time, and 200 SGD in THB.','Bangkok weekend']
-    ],
-    systemPrompt: '',
-    tools: [],
-    maxIter: 0,
-    footer: 'Stage 4 of 4'
+  4:{
+    placeholder:'e.g. I am flying from Singapore to London. Give me a full briefing.',
+    chips:[['I am flying from Singapore to London. Full briefing - weather both cities, time difference, and 500 SGD in GBP.','Travel briefing'],['Compare Singapore and Tokyo - weather, time, and 300 SGD in JPY.','SG vs Tokyo'],['Heading to Dubai - weather, local time, 400 SGD in AED.','Dubai briefing'],['Weekend trip to Bangkok - weather, local time, 200 SGD in THB.','Bangkok weekend']],
+    prompt:'',tools:[],max:0,footer:'Stage 4 of 4'
   }
 };
+
+// ── Stage switcher ────────────────────────────────────────────────
 function switchStage(n) {
-  const cfg = STAGE_CONFIG[n];
-  if(!cfg) return;
-  currentStage = n;
+  stage = n;
+  const c = CFG[n];
 
-  // Tabs
-  [1,2,3,4].forEach(i => {
-    const t = document.getElementById('tab-'+i);
-    if(t) t.classList.toggle('active', i===n);
-  });
+  // tabs
+  for(let i=1;i<=4;i++){
+    const t=document.getElementById('tab-'+i);
+    if(t) t.className='tab'+(i===n?' active':'');
+  }
 
-  // Explainers — just show/hide, no innerHTML
-  [1,2,3,4].forEach(i => {
-    const el = document.getElementById('ex-'+i);
-    if(el) el.style.display = i===n ? 'block' : 'none';
-  });
+  // explainers
+  for(let i=1;i<=4;i++){
+    const e=document.getElementById('ex-'+i);
+    if(e) e.style.display=i===n?'block':'none';
+  }
 
-  // Chips
-  const chipsEl = document.getElementById('chips');
-  chipsEl.innerHTML = cfg.chips.map(([q,l]) => '<span class="chip" onclick='setQ(' + JSON.stringify(q) + ')'>' + l + '</span>').join('');
+  // panels
+  document.getElementById('mem-panel').style.display=n===3?'block':'none';
+  document.getElementById('sa-wrap').style.display=n===4?'block':'none';
 
-  document.getElementById('q').placeholder = cfg.placeholder;
-  document.getElementById('q').value = '';
-  document.getElementById('footer-stage').textContent = cfg.footer;
-  document.getElementById('memory-panel').style.display = n===3 ? 'block' : 'none';
-  document.getElementById('sub-agents-wrap').style.display = n===4 ? 'block' : 'none';
-  document.getElementById('trace-card').style.display = 'none';
-  document.getElementById('answer-card').style.display = 'none';
-  document.getElementById('log').innerHTML = '';
-  iterationCount = 0;
+  // chips
+  document.getElementById('chips').innerHTML=c.chips.map(function(ch){
+    return '<span class="chip" onclick="setQ(\''+ch[0].replace(/'/g,"\\'")+'\')">' + ch[1] + '</span>';
+  }).join('');
 
-  if(n===3) renderMemory();
-  if(n===4) resetSubAgents();
+  document.getElementById('q').placeholder=c.placeholder;
+  document.getElementById('q').value='';
+  document.getElementById('footer-stage').textContent=c.footer;
+  document.getElementById('trace-card').style.display='none';
+  document.getElementById('ans-card').style.display='none';
+  document.getElementById('log').innerHTML='';
+  iters=0; updateIters();
+
+  if(n===3) renderMem();
+  if(n===4) resetSA();
 }
 
-// ── Tool definitions ─────────────────────────────────────────────
-const TOOLS_DEFS = {
-  get_weather: {
-    name:"get_weather",
-    description:"Get current weather for a city. Returns temperature, conditions, humidity, wind.",
-    parameters:{type:"object",properties:{city:{type:"string"},units:{type:"string",enum:["celsius","fahrenheit"]}},required:["city"]}
-  },
-  calculate: {
-    name:"calculate",
-    description:"Evaluate any mathematical expression, unit conversion, or arithmetic.",
-    parameters:{type:"object",properties:{expression:{type:"string"}},required:["expression"]}
-  },
-  get_time: {
-    name:"get_time",
-    description:"Get the current local time and date in a given city.",
-    parameters:{type:"object",properties:{city:{type:"string"}},required:["city"]}
-  },
-  get_exchange_rate: {
-    name:"get_exchange_rate",
-    description:"Get the current exchange rate between two currencies and optionally convert an amount.",
-    parameters:{type:"object",properties:{from:{type:"string"},to:{type:"string"},amount:{type:"number"}},required:["from","to"]}
-  },
-  save_memory: {
-    name:"save_memory",
-    description:"Save an important fact about the user to long-term memory. Use a short descriptive key and a clear value. Examples: key=home_city value=Singapore, key=name value=CS, key=travel_destination value=Kuala Lumpur.",
-    parameters:{type:"object",properties:{key:{type:"string",description:"Short identifier e.g. home_city, name, preference"},value:{type:"string",description:"The fact to remember"}},required:["key","value"]}
-  }
+// ── Memory ────────────────────────────────────────────────────────
+const MK='dora_mem_v1';
+function loadMem(){try{return JSON.parse(localStorage.getItem(MK)||'[]');}catch(e){return [];}}
+function saveMem(key,val){
+  const m=loadMem();
+  const i=m.findIndex(function(x){return x.key===key;});
+  const item={key:key,val:val,t:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})};
+  if(i>=0)m[i]=item;else m.push(item);
+  localStorage.setItem(MK,JSON.stringify(m.slice(-20)));
+  renderMem();
+}
+function clearMemory(){localStorage.removeItem(MK);renderMem();}
+function renderMem(){
+  const m=loadMem();
+  const b=document.getElementById('mem-body');
+  const inj=document.getElementById('mem-inj');
+  if(!b)return;
+  if(!m.length){b.innerHTML='<div class="mem-empty">No memories yet. Ask something to start building memory.</div>';inj.style.display='none';return;}
+  b.innerHTML=m.map(function(x){return '<div class="mem-item"><div><div class="mem-val">'+x.val+'</div><div class="mem-key">'+x.key+' - saved '+x.t+'</div></div></div>';}).join('');
+  inj.style.display='block';
+  inj.textContent='Injected: '+m.map(function(x){return x.val;}).join(', ');
+}
+function memPrompt(){
+  const m=loadMem();
+  if(!m.length)return'';
+  return'\n\nUser facts:\n'+m.map(function(x){return'- '+x.val;}).join('\n');
+}
+
+// ── Tool definitions ──────────────────────────────────────────────
+const TDEFS={
+  get_weather:{name:'get_weather',description:'Get current weather for a city.',parameters:{type:'object',properties:{city:{type:'string'},units:{type:'string',enum:['celsius','fahrenheit']}},required:['city']}},
+  calculate:{name:'calculate',description:'Evaluate any math expression.',parameters:{type:'object',properties:{expression:{type:'string'}},required:['expression']}},
+  get_time:{name:'get_time',description:'Get current local time in a city.',parameters:{type:'object',properties:{city:{type:'string'}},required:['city']}},
+  get_exchange_rate:{name:'get_exchange_rate',description:'Get exchange rate between currencies, optionally convert an amount.',parameters:{type:'object',properties:{from:{type:'string'},to:{type:'string'},amount:{type:'number'}},required:['from','to']}},
+  save_memory:{name:'save_memory',description:'Save a fact about the user. key=short identifier, value=the fact.',parameters:{type:'object',properties:{key:{type:'string'},value:{type:'string'}},required:['key','value']}}
 };
 
-const WEATHER = {
-  tokyo:{temp:24,feels:22,condition:"Partly cloudy",humidity:68,wind:12},
-  singapore:{temp:31,feels:36,condition:"Humid and hazy",humidity:84,wind:8},
-  london:{temp:14,feels:12,condition:"Overcast",humidity:72,wind:18},
-  sydney:{temp:19,feels:17,condition:"Clear",humidity:55,wind:14},
-  dubai:{temp:38,feels:42,condition:"Sunny and hot",humidity:45,wind:10},
-  paris:{temp:17,feels:15,condition:"Light rain",humidity:78,wind:16},
-  "kuala lumpur":{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
-  kl:{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
-  bangkok:{temp:33,feels:38,condition:"Thunderstorm",humidity:88,wind:6},
-  "new york":{temp:22,feels:21,condition:"Partly sunny",humidity:58,wind:20},
-  berlin:{temp:13,feels:11,condition:"Cloudy",humidity:70,wind:22},
-  seoul:{temp:20,feels:18,condition:"Clear",humidity:52,wind:15}
-};
+const WX={tokyo:{temp:24,feels:22,cond:'Partly cloudy',hum:68,wind:12},singapore:{temp:31,feels:36,cond:'Humid and hazy',hum:84,wind:8},london:{temp:14,feels:12,cond:'Overcast',hum:72,wind:18},sydney:{temp:19,feels:17,cond:'Clear',hum:55,wind:14},dubai:{temp:38,feels:42,cond:'Sunny and hot',hum:45,wind:10},paris:{temp:17,feels:15,cond:'Light rain',hum:78,wind:16},'kuala lumpur':{temp:32,feels:38,cond:'Partly cloudy with showers',hum:82,wind:9},kl:{temp:32,feels:38,cond:'Partly cloudy with showers',hum:82,wind:9},bangkok:{temp:33,feels:38,cond:'Thunderstorm',hum:88,wind:6},'new york':{temp:22,feels:21,cond:'Partly sunny',hum:58,wind:20},berlin:{temp:13,feels:11,cond:'Cloudy',hum:70,wind:22},seoul:{temp:20,feels:18,cond:'Clear',hum:52,wind:15}};
+const TZ={london:'Europe/London',tokyo:'Asia/Tokyo',singapore:'Asia/Singapore','new york':'America/New_York',newyork:'America/New_York',sydney:'Australia/Sydney',dubai:'Asia/Dubai',paris:'Europe/Paris',berlin:'Europe/Berlin',bangkok:'Asia/Bangkok',jakarta:'Asia/Jakarta',seoul:'Asia/Seoul','kuala lumpur':'Asia/Kuala_Lumpur',kl:'Asia/Kuala_Lumpur',kualalumpur:'Asia/Kuala_Lumpur'};
+const FX={'SGD-MYR':3.51,'SGD-USD':0.74,'SGD-JPY':112.4,'SGD-EUR':0.68,'SGD-GBP':0.58,'SGD-AUD':1.14,'SGD-AED':2.72,'SGD-THB':24.5,'USD-SGD':1.35,'USD-MYR':4.72,'MYR-SGD':0.285,'GBP-USD':1.27,'EUR-USD':1.09,'JPY-USD':0.0066};
 
-const CITY_TZ = {
-  london:"Europe/London",tokyo:"Asia/Tokyo",singapore:"Asia/Singapore",
-  "new york":"America/New_York",newyork:"America/New_York",sydney:"Australia/Sydney",
-  dubai:"Asia/Dubai",paris:"Europe/Paris",berlin:"Europe/Berlin",
-  bangkok:"Asia/Bangkok",jakarta:"Asia/Jakarta",seoul:"Asia/Seoul",
-  "kuala lumpur":"Asia/Kuala_Lumpur",kl:"Asia/Kuala_Lumpur",kualalumpur:"Asia/Kuala_Lumpur"
-};
-
-const RATES = {
-  "SGD-MYR":3.51,"SGD-USD":0.74,"SGD-JPY":112.4,"SGD-EUR":0.68,"SGD-GBP":0.58,"SGD-AUD":1.14,
-  "USD-SGD":1.35,"USD-MYR":4.72,"USD-JPY":151.8,"USD-EUR":0.92,"MYR-SGD":0.285,
-  "MYR-USD":0.212,"JPY-USD":0.0066,"EUR-USD":1.09,"GBP-USD":1.27
-};
-
-function executeTool(name, args) {
-  if(name === "save_memory"){
-    saveMemoryItem(args.key, args.value);
-    return `Memory saved: "${args.key}" = "${args.value}"`;
-  }
-  if(name === "get_weather"){
-    const key=(args.city||"").toLowerCase().trim().replace(/kuala lumpur/,"kl");
-    const d=WEATHER[key]||WEATHER[(args.city||"").toLowerCase().trim()]||{temp:26,feels:24,condition:"Partly cloudy",humidity:65,wind:10};
+function runTool(name,args){
+  if(name==='save_memory'){saveMem(args.key,args.value);return'Memory saved: "'+args.key+'" = "'+args.value+'"';}
+  if(name==='get_weather'){
+    const k=(args.city||'').toLowerCase().trim().replace('kuala lumpur','kl');
+    const d=WX[k]||WX[(args.city||'').toLowerCase().trim()]||{temp:26,feels:24,cond:'Partly cloudy',hum:65,wind:10};
     let t=d.temp,f=d.feels;
-    const isFahr=args.units==="fahrenheit";
-    if(isFahr){t=Math.round(t*9/5+32);f=Math.round(f*9/5+32);}
-    const u=isFahr?"°F":"°C";
-    return `Weather in ${args.city}: ${t}${u} (feels like ${f}${u}), ${d.condition}. Humidity ${d.humidity}%, wind ${d.wind} km/h.`;
+    if(args.units==='fahrenheit'){t=Math.round(t*9/5+32);f=Math.round(f*9/5+32);}
+    const u=args.units==='fahrenheit'?'F':'C';
+    return 'Weather in '+args.city+': '+t+'\u00b0'+u+' (feels '+f+'\u00b0'+u+'), '+d.cond+'. Humidity '+d.hum+'%, wind '+d.wind+' km/h.';
   }
-  if(name === "calculate"){
-    try{
-      const safe=(args.expression||"").replace(/[^0-9+\-*/().\s]/g,"");
-      const r=Function('"use strict";return('+safe+')')();
-      const rounded=Number.isInteger(r)?r:parseFloat(r.toFixed(4));
-      return `${args.expression} = ${rounded.toLocaleString()}`;
-    }catch(e){ return "Could not evaluate: "+args.expression; }
+  if(name==='calculate'){
+    try{const s=(args.expression||'').replace(/[^0-9+\-*\/().\s]/g,'');const r=Function('"use strict";return('+s+')')();return args.expression+' = '+(Number.isInteger(r)?r:parseFloat(r.toFixed(4))).toLocaleString();}
+    catch(e){return 'Could not evaluate: '+args.expression;}
   }
-  if(name === "get_time"){
-    const key=(args.city||"").toLowerCase().replace(/\s+/g,"").replace("kualalumpur","kl");
-    const tz=CITY_TZ[key]||CITY_TZ[(args.city||"").toLowerCase()]||"UTC";
-    try{
-      const time=new Date().toLocaleTimeString("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",second:"2-digit"});
-      const date=new Date().toLocaleDateString("en-GB",{timeZone:tz,weekday:"long",day:"numeric",month:"long",year:"numeric"});
-      return `Current time in ${args.city}: ${time} — ${date}. (${tz})`;
-    }catch(e){ return "Could not get time for "+args.city; }
+  if(name==='get_time'){
+    const k=(args.city||'').toLowerCase().replace(/\s+/g,'').replace('kualalumpur','kl');
+    const tz=TZ[k]||TZ[(args.city||'').toLowerCase()]||'UTC';
+    try{const t=new Date().toLocaleTimeString('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit'});const d=new Date().toLocaleDateString('en-GB',{timeZone:tz,weekday:'long',day:'numeric',month:'long',year:'numeric'});return 'Time in '+args.city+': '+t+' - '+d+'.';}
+    catch(e){return 'Could not get time for '+args.city;}
   }
-  if(name === "get_exchange_rate"){
-    const key=`${(args.from||"").toUpperCase()}-${(args.to||"").toUpperCase()}`;
-    const rate=RATES[key];
-    if(!rate) return `Exchange rate for ${key} not available.`;
-    if(args.amount){ const c=(args.amount*rate).toFixed(2); return `${args.amount} ${args.from} = ${c} ${args.to} (rate: 1 ${args.from} = ${rate} ${args.to})`; }
-    return `Exchange rate: 1 ${args.from} = ${rate} ${args.to}`;
+  if(name==='get_exchange_rate'){
+    const k=((args.from||'').toUpperCase()+'-'+(args.to||'').toUpperCase());
+    const r=FX[k];
+    if(!r)return 'Rate for '+k+' not available.';
+    if(args.amount){return args.amount+' '+args.from+' = '+(args.amount*r).toFixed(2)+' '+args.to+' (rate: '+r+')';}
+    return '1 '+args.from+' = '+r+' '+args.to;
   }
-  return "Unknown tool: "+name;
+  return 'Unknown tool: '+name;
 }
 
-// ── UI helpers ───────────────────────────────────────────────────
-function setQ(t){ document.getElementById('q').value=t; }
+// ── UI helpers ────────────────────────────────────────────────────
+function setQ(t){document.getElementById('q').value=t;}
+function updateIters(){const e=document.getElementById('iter-count');if(e)e.textContent=iters+' iteration'+(iters!==1?'s':'');}
 
-function addStep(phase, title, meta){
-  const cfg={decide:{cls:"si-decide",icon:"D"},observe:{cls:"si-observe",icon:"O"},reason:{cls:"si-reason",icon:"R"},act:{cls:"si-act",icon:"A"},memory:{cls:"si-reason",icon:"M"}};
-  const c=cfg[phase]||cfg.decide;
-  const el=document.createElement("div");
-  el.className="step fade-in";
-  el.innerHTML=`<div class="step-icon ${c.cls}">${c.icon}</div><div class="step-body"><div class="step-title">${title}</div>${meta?`<div class="step-meta">${meta}</div>`:""}</div>`;
-  document.getElementById("log").appendChild(el);
-}
-
-function addLoopSep(n){
-  const el=document.createElement("div");
-  el.className="loop-sep fade-in";
-  el.innerHTML=`<div class="loop-line"></div><div class="loop-label">loop ${n}</div><div class="loop-line"></div>`;
-  document.getElementById("log").appendChild(el);
-}
-
-function updateIterCount(){
-  const el=document.getElementById("iter-count");
-  if(el) el.textContent=`${iterationCount} iteration${iterationCount!==1?"s":""}`;
-}
-
-// ── Agent loop ───────────────────────────────────────────────────
-async function runAgent(){
-  if(currentStage===4){ runMultiAgent(); return; }
-  const q=document.getElementById("q").value.trim();
-  if(!q) return;
-
-  const btn=document.getElementById("ask-btn");
-  btn.disabled=true; btn.textContent="Running…";
-
-  document.getElementById("log").innerHTML="";
-  document.getElementById("trace-card").style.display="block";
-  document.getElementById("answer-card").style.display="none";
-  document.getElementById("stats-row").innerHTML="";
-  iterationCount=0;
-  updateIterCount();
-
-  const cfg=STAGE_CONFIG[currentStage];
-  const toolDefs=cfg.tools.map(t=>TOOLS_DEFS[t]);
-
-  // Build system prompt — inject memory for Stage 3
-  let systemPrompt=cfg.systemPrompt;
-  if(currentStage===3){
-    const memPrompt=buildMemoryPrompt();
-    systemPrompt='You are a helpful AI agent with memory. You MUST use tools to fetch any real data. Use save_memory to remember important facts about the user (name, home city, travel destinations, preferences). Save one fact at a time. Give warm personalised answers referencing what you know.'+ memPrompt;
-    if(memPrompt){
-      addStep("memory","Memory loaded — injecting context into prompt", memPrompt.replace(/\n/g,' ').substring(0,120));
-    }
-  }
-
-  addStep("decide","Deciding which tool to use…","→ sending question + tool definitions to Gemini via Worker");
-
-  const contents=[{role:"user",parts:[{text:q}]}];
-  const startTime=Date.now();
-  let totalToolCalls=0;
-
-  try{
-    let iterations=0;
-    while(iterations<cfg.maxIter){
-      iterations++;
-      iterationCount=iterations;
-      if(iterations>1) addLoopSep(iterations);
-      updateIterCount();
-
-      const res=await fetch(WORKER_URL,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          system_instruction:{parts:[{text:systemPrompt}]},
-          contents,
-          tools:[{function_declarations:toolDefs}],
-          generationConfig:{temperature:0.2}
-        })
-      });
-
-      const data=await res.json();
-      if(data.error){addStep("decide","API error: "+data.error.message,null);break;}
-
-      const candidate=data.candidates?.[0];
-      if(!candidate){addStep("decide","No response from model.",null);break;}
-
-      const parts=candidate.content?.parts||[];
-      const toolCalls=parts.filter(p=>p.functionCall);
-      const textParts=parts.filter(p=>p.text);
-
-      if(textParts.length && !toolCalls.length){
-        const finalText=textParts.map(p=>p.text).join("\n");
-        addStep("reason","Reasoning complete — goal fully achieved","→ loop ends here");
-        addStep("act","Formulating final answer…",null);
-        document.getElementById("answer-card").style.display="block";
-        document.getElementById("answer").textContent=finalText;
-        const elapsed=((Date.now()-startTime)/1000).toFixed(1);
-        document.getElementById("stats-row").innerHTML=
-          `<div class="stat">loops <span>${iterationCount}</span></div>`+
-          `<div class="stat">tool calls <span>${totalToolCalls}</span></div>`+
-          `<div class="stat">time <span>${elapsed}s</span></div>`+
-          `<div class="stat">stage <span>${currentStage}</span></div>`;
-        if(currentStage===3) renderMemory();
-        break;
-      }
-
-      if(textParts.length){
-        addStep("reason",`Thinking: "${textParts.map(p=>p.text).join(" ").substring(0,140)}…"`,null);
-      }
-
-      contents.push({role:"model",parts});
-
-      const toolResultParts=[];
-      for(const part of toolCalls){
-        const fn=part.functionCall;
-        totalToolCalls++;
-        const isMem=fn.name==="save_memory";
-        addStep(isMem?"memory":"decide", isMem?`Saving memory: <strong>${fn.args.key}</strong>`:`Decided to call: <strong>${fn.name}</strong>`, JSON.stringify(fn.args));
-        const result=executeTool(fn.name,fn.args);
-        addStep(isMem?"memory":"observe", isMem?result:"Observed result: "+result, null);
-        toolResultParts.push({functionResponse:{name:fn.name,response:{result}}});
-      }
-
-      contents.push({role:"user",parts:toolResultParts});
-      addStep("reason","Reasoning about the result…","→ looping back to model");
-    }
-  }catch(e){
-    addStep("decide","Error: "+e.message,null);
-  }
-
-  btn.disabled=false;
-  btn.textContent="Ask";
-}
-
-
-// ── Stage 4 — Multi-agent orchestrator ──────────────────────────
-const SPECIALISTS = {
-  weather: {
-    id: 'agent-weather',
-    prompt: 'You are a weather specialist agent. Use the get_weather tool to fetch weather data for any cities requested. Return only weather facts — temperature, conditions, humidity, wind. Be concise.',
-    tools: ['get_weather']
-  },
-  finance: {
-    id: 'agent-finance',
-    prompt: 'You are a finance specialist agent. Use get_exchange_rate and calculate tools for all currency conversions and math. Show the rate and converted amount clearly. Be concise.',
-    tools: ['get_exchange_rate','calculate']
-  },
-  time: {
-    id: 'agent-time',
-    prompt: 'You are a time specialist agent. Use get_time to fetch current local times for any cities requested. If two cities are given, also state the time difference between them. Be concise.',
-    tools: ['get_time']
-  }
-};
-
-function toggleAgent(id){
-  const body = document.getElementById(id+'-body');
-  if(body) body.classList.toggle('open');
-}
-
-function resetAgentPanels(){
-  ['weather','finance','time'].forEach(a => {
-    const s = document.getElementById('agent-'+a+'-status');
-    const b = document.getElementById('agent-'+a+'-body');
-    const p = document.getElementById('agent-'+a);
-    if(s) s.textContent = 'idle';
-    if(b){ b.innerHTML=''; b.classList.remove('open'); }
-    if(p) p.style.borderColor = '';
-  });
-}
-
-function setAgentStatus(agent, status, color){
-  const el = document.getElementById('agent-'+agent+'-status');
-  const panel = document.getElementById('agent-'+agent);
-  if(el) el.textContent = status;
-  if(panel && color) panel.style.borderColor = color;
-}
-
-function appendAgentStep(agent, text){
-  const body = document.getElementById('agent-'+agent+'-body');
-  if(!body) return;
-  body.classList.add('open');
-  const el = document.createElement('div');
-  el.className = 'agent-step';
-  el.textContent = text;
-  body.appendChild(el);
-}
-
-function setAgentResult(agent, result){
-  const body = document.getElementById('agent-'+agent+'-body');
-  if(!body) return;
-  const el = document.createElement('div');
-  el.className = 'agent-result';
-  el.textContent = result;
-  body.appendChild(el);
-}
-
-async function runSpecialist(agentKey, query){
-  const spec = SPECIALISTS[agentKey];
-  const colors = {weather:'#c9a96e', finance:'#7eb8a0', time:'#a08ec9'};
-  setAgentStatus(agentKey, 'running...', colors[agentKey]);
-  appendAgentStep(agentKey, '→ received sub-task: '+query.substring(0,60));
-
-  const toolDefs = spec.tools.map(t => TOOLS_DEFS[t]);
-  const contents = [{role:'user', parts:[{text: query}]}];
-  let result = '';
-
-  try {
-    let iters = 0;
-    while(iters < 5){
-      iters++;
-      const res = await fetch(WORKER_URL, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          system_instruction:{parts:[{text: spec.prompt}]},
-          contents,
-          tools:[{function_declarations: toolDefs}],
-          generationConfig:{temperature:0.1}
-        })
-      });
-      const data = await res.json();
-      if(data.error){ result = 'Error: '+data.error.message; break; }
-
-      const parts = data.candidates?.[0]?.content?.parts || [];
-      const toolCalls = parts.filter(p=>p.functionCall);
-      const textParts = parts.filter(p=>p.text);
-
-      if(textParts.length && !toolCalls.length){
-        result = textParts.map(p=>p.text).join('\n');
-        break;
-      }
-
-      contents.push({role:'model', parts});
-      const toolResults = [];
-      for(const part of toolCalls){
-        const fn = part.functionCall;
-        appendAgentStep(agentKey, '→ called '+fn.name+'('+JSON.stringify(fn.args)+')');
-        const r = executeTool(fn.name, fn.args);
-        appendAgentStep(agentKey, '← '+r);
-        toolResults.push({functionResponse:{name:fn.name, response:{result:r}}});
-      }
-      contents.push({role:'user', parts: toolResults});
-    }
-  } catch(e){ result = 'Error: '+e.message; }
-
-  setAgentStatus(agentKey, 'done', colors[agentKey]);
-  setAgentResult(agentKey, result);
-  return {agent: agentKey, result};
-}
-
-async function runOrchestrator(){
-  const q = document.getElementById('q').value.trim();
-  if(!q) return;
-
-  const btn = document.getElementById('ask-btn');
-  btn.disabled=true; btn.textContent='Running...';
-
-  resetAgentPanels();
-  document.getElementById('trace-card').style.display = 'none';
-  document.getElementById('answer-card').style.display = 'none';
-
-  // Show orchestrator trace
-  document.getElementById('log').innerHTML = '';
-  document.getElementById('trace-card').style.display = 'block';
-  addStep('decide','Orchestrator — decomposing goal into sub-tasks','→ dispatching 3 specialists in parallel');
-
-  const startTime = Date.now();
-
-  // Run all specialists in parallel
-  const [weatherRes, financeRes, timeRes] = await Promise.all([
-    runSpecialist('weather', q),
-    runSpecialist('finance', q),
-    runSpecialist('time', q)
-  ]);
-
-  const elapsed1 = ((Date.now()-startTime)/1000).toFixed(1);
-  addStep('observe',`All 3 specialists completed in ${elapsed1}s`,'→ results collected, sending to orchestrator for synthesis');
-
-  // Synthesis call
-  addStep('reason','Orchestrator synthesising all results...','→ final API call combining specialist outputs');
-
-  const synthesisPrompt = `You are an orchestrator. Three specialist agents have completed their work. Synthesise their results into a clear, well-structured final answer for the user.
-
-User question: ${q}
-
-Weather Agent result:
-${weatherRes.result}
-
-Finance Agent result:
-${financeRes.result}
-
-Time Agent result:
-${timeRes.result}
-
-Write a comprehensive, friendly briefing that combines all the above information. Use clear sections.`;
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        contents:[{role:'user', parts:[{text: synthesisPrompt}]}],
-        generationConfig:{temperature:0.3}
-      })
-    });
-    const data = await res.json();
-    const finalText = data.candidates?.[0]?.content?.parts?.filter(p=>p.text).map(p=>p.text).join('\n') || 'Could not synthesise results.';
-
-    addStep('act','Orchestrator — final answer ready','→ loop complete');
-    document.getElementById('answer-card').style.display='block';
-    document.getElementById('answer').textContent = finalText;
-
-    const elapsed = ((Date.now()-startTime)/1000).toFixed(1);
-    document.getElementById('stats-row').innerHTML =
-      `<div class="stat">agents <span>3</span></div>`+
-      `<div class="stat">parallel calls <span>3</span></div>`+
-      `<div class="stat">time <span>${elapsed}s</span></div>`+
-      `<div class="stat">stage <span>4</span></div>`;
-  } catch(e){
-    addStep('decide','Synthesis error: '+e.message, null);
-  }
-
-  btn.disabled=false; btn.textContent='Ask';
-}
-
-document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")runAgent();});
-
-// ── Stage 4 — Multi-agent ────────────────────────────────────────
-const SPECIALISTS = {
-  weather: {
-    name: 'Weather Agent',
-    icon: 'W',
-    color: 'var(--decide)',
-    systemPrompt: 'You are a specialist weather agent. Use the get_weather tool to fetch weather data for any city requested. Always use the tool — never guess. Return just the facts clearly.',
-    tools: ['get_weather']
-  },
-  finance: {
-    name: 'Finance Agent',
-    icon: 'F',
-    color: 'var(--observe)',
-    systemPrompt: 'You are a specialist finance agent. Use get_exchange_rate and calculate tools to handle all currency conversions and math. Always use tools — never guess rates. Return clear numeric results.',
-    tools: ['get_exchange_rate','calculate']
-  },
-  time: {
-    name: 'Time Agent',
-    icon: 'T',
-    color: 'var(--reason)',
-    systemPrompt: 'You are a specialist time agent. Use the get_time tool to fetch current local time for any city. Calculate time differences if asked. Always use the tool.',
-    tools: ['get_time','calculate']
-  }
-};
-
-function toggleSA(name){
-  const body=document.getElementById('sa-'+name+'-body');
-  if(body) body.classList.toggle('open');
-}
-
-function resetSubAgents(){
-  ['weather','finance','time'].forEach(n=>{
-    const s=document.getElementById('sa-'+n+'-status');
-    const b=document.getElementById('sa-'+n+'-body');
-    if(s) s.textContent='waiting';
-    if(b){ b.innerHTML=''; b.classList.remove('open'); }
-    const card=document.getElementById('sa-'+n);
-    if(card) card.style.borderColor='var(--border)';
-  });
-}
-
-function saLog(name, text, meta){
-  const body=document.getElementById('sa-'+name+'-body');
-  if(!body) return;
-  body.classList.add('open');
+function addStep(type,title,meta){
+  const icons={d:'D',o:'O',r:'R',a:'A',m:'M'};
+  const cls={d:'si-d',o:'si-o',r:'si-r',a:'si-a',m:'si-m'};
   const el=document.createElement('div');
-  el.className='sub-step';
-  el.innerHTML=text+(meta?` <span>${meta}</span>`:'');
-  body.appendChild(el);
+  el.className='step fi';
+  el.innerHTML='<div class="si '+(cls[type]||'si-d')+'">'+(icons[type]||'D')+'</div><div class="sb"><div class="st">'+title+'</div>'+(meta?'<div class="sm">'+meta+'</div>':'')+'</div>';
+  document.getElementById('log').appendChild(el);
 }
 
-function saStatus(name, text, color){
-  const s=document.getElementById('sa-'+name+'-status');
-  const card=document.getElementById('sa-'+name);
-  if(s) s.textContent=text;
-  if(card && color) card.style.borderColor=color;
+function addSep(n){
+  const el=document.createElement('div');
+  el.className='lsep fi';
+  el.innerHTML='<div class="ll"></div><div class="lt">loop '+n+'</div><div class="ll"></div>';
+  document.getElementById('log').appendChild(el);
 }
 
-async function runSpecialist(specialistKey, subQuery){
-  const spec=SPECIALISTS[specialistKey];
-  const toolDefs=spec.tools.map(t=>TOOLS_DEFS[t]);
-  saStatus(specialistKey,'running…','var(--accent)');
-  saLog(specialistKey,`Task: "${subQuery.substring(0,60)}${subQuery.length>60?'…':''}"`);
+// ── Multi-agent helpers ───────────────────────────────────────────
+function toggleSA(name){const b=document.getElementById('sa-'+name+'-body');if(b)b.classList.toggle('open');}
+function resetSA(){
+  ['weather','finance','time'].forEach(function(n){
+    const s=document.getElementById('sa-'+n+'-st');
+    const b=document.getElementById('sa-'+n+'-body');
+    const c=document.getElementById('sa-'+n);
+    if(s)s.textContent='waiting';
+    if(b){b.innerHTML='';b.classList.remove('open');}
+    if(c)c.style.borderColor='var(--border)';
+  });
+}
+function saLog(name,text,meta){
+  const b=document.getElementById('sa-'+name+'-body');
+  if(!b)return;
+  b.classList.add('open');
+  const el=document.createElement('div');
+  el.className='sa-step';
+  el.innerHTML=text+(meta?' <span>'+meta+'</span>':'');
+  b.appendChild(el);
+}
+function saStatus(name,text,col){
+  const s=document.getElementById('sa-'+name+'-st');
+  const c=document.getElementById('sa-'+name);
+  if(s)s.textContent=text;
+  if(c&&col)c.style.borderColor=col;
+}
 
-  const contents=[{role:"user",parts:[{text:subQuery}]}];
-  let result='No result';
-  let toolCallCount=0;
+// ── Specialist runner ─────────────────────────────────────────────
+const SPECS={
+  weather:{prompt:'You are a weather specialist. Use get_weather for any city. Always use the tool. Return facts clearly.',tools:['get_weather']},
+  finance:{prompt:'You are a finance specialist. Use get_exchange_rate and calculate for all currency and math. Return clear numeric results.',tools:['get_exchange_rate','calculate']},
+  time:{prompt:'You are a time specialist. Use get_time for any city. Calculate time differences if asked.',tools:['get_time','calculate']}
+};
+
+async function runSpecialist(key,task){
+  const spec=SPECS[key];
+  const tdefs=spec.tools.map(function(t){return TDEFS[t];});
+  saStatus(key,'running...','var(--accent)');
+  saLog(key,'Task: '+task.substring(0,60)+(task.length>60?'...':''));
+  const contents=[{role:'user',parts:[{text:task}]}];
+  let result='No result',calls=0;
+  try{
+    let i=0;
+    while(i<5){
+      i++;
+      const res=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:spec.prompt}]},contents:contents,tools:[{function_declarations:tdefs}],generationConfig:{temperature:0.1}})});
+      const data=await res.json();
+      if(data.error){saLog(key,'Error: '+data.error.message);break;}
+      const cand=data.candidates&&data.candidates[0];
+      if(!cand)break;
+      const parts=cand.content&&cand.content.parts||[];
+      const tcs=parts.filter(function(p){return p.functionCall;});
+      const txts=parts.filter(function(p){return p.text;});
+      if(txts.length&&!tcs.length){result=txts.map(function(p){return p.text;}).join(' ');saLog(key,'Done: '+result.substring(0,80));break;}
+      contents.push({role:'model',parts:parts});
+      const trp=[];
+      for(let j=0;j<tcs.length;j++){
+        const fn=tcs[j].functionCall;calls++;
+        saLog(key,'Called '+fn.name,' '+JSON.stringify(fn.args).substring(0,40));
+        const r=runTool(fn.name,fn.args);
+        saLog(key,'Got: '+r.substring(0,70));
+        trp.push({functionResponse:{name:fn.name,response:{result:r}}});
+      }
+      contents.push({role:'user',parts:trp});
+    }
+  }catch(e){saLog(key,'Error: '+e.message);}
+  saStatus(key,'done ('+calls+' calls)','var(--observe)');
+  return{key:key,result:result,calls:calls};
+}
+
+// ── Main agent loop ───────────────────────────────────────────────
+async function runAgent(){
+  if(stage===4){runMultiAgent();return;}
+  const q=document.getElementById('q').value.trim();
+  if(!q)return;
+  const btn=document.getElementById('ask-btn');
+  btn.disabled=true;btn.textContent='Running...';
+  document.getElementById('log').innerHTML='';
+  document.getElementById('trace-card').style.display='block';
+  document.getElementById('ans-card').style.display='none';
+  document.getElementById('stats').innerHTML='';
+  iters=0;updateIters();
+
+  const c=CFG[stage];
+  const tdefs=c.tools.map(function(t){return TDEFS[t];});
+  let sysPrompt=c.prompt;
+  if(stage===3){
+    const mp=memPrompt();
+    sysPrompt+=mp;
+    if(mp)addStep('m','Memory loaded - injecting into prompt',mp.replace(/\n/g,' ').substring(0,100));
+  }
+
+  addStep('d','Deciding which tool to use...','sending to Gemini via Worker');
+  const contents=[{role:'user',parts:[{text:q}]}];
+  const t0=Date.now();let total=0;
 
   try{
-    let iters=0;
-    while(iters<5){
-      iters++;
-      const res=await fetch(WORKER_URL,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          system_instruction:{parts:[{text:spec.systemPrompt}]},
-          contents,
-          tools:[{function_declarations:toolDefs}],
-          generationConfig:{temperature:0.1}
-        })
-      });
+    let it=0;
+    while(it<c.max){
+      it++;iters=it;
+      if(it>1)addSep(it);
+      updateIters();
+      const res=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:sysPrompt}]},contents:contents,tools:[{function_declarations:tdefs}],generationConfig:{temperature:0.2}})});
       const data=await res.json();
-      if(data.error){saLog(specialistKey,'Error: '+data.error.message);break;}
-      const candidate=data.candidates?.[0];
-      if(!candidate) break;
-      const parts=candidate.content?.parts||[];
-      const toolCalls=parts.filter(p=>p.functionCall);
-      const textParts=parts.filter(p=>p.text);
-      if(textParts.length && !toolCalls.length){
-        result=textParts.map(p=>p.text).join(' ');
-        saLog(specialistKey,'Done: '+result.substring(0,80)+(result.length>80?'…':''));
+      if(data.error){addStep('d','API error: '+data.error.message);break;}
+      const cand=data.candidates&&data.candidates[0];
+      if(!cand){addStep('d','No response.');break;}
+      const parts=cand.content&&cand.content.parts||[];
+      const tcs=parts.filter(function(p){return p.functionCall;});
+      const txts=parts.filter(function(p){return p.text;});
+      if(txts.length&&!tcs.length){
+        addStep('r','Reasoning complete - goal achieved','loop ends here');
+        addStep('a','Formulating final answer...');
+        document.getElementById('ans-card').style.display='block';
+        document.getElementById('ans').textContent=txts.map(function(p){return p.text;}).join('\n');
+        const el=((Date.now()-t0)/1000).toFixed(1);
+        document.getElementById('stats').innerHTML='<div class="stat">loops <span>'+iters+'</span></div><div class="stat">tool calls <span>'+total+'</span></div><div class="stat">time <span>'+el+'s</span></div><div class="stat">stage <span>'+stage+'</span></div>';
+        if(stage===3)renderMem();
         break;
       }
-      contents.push({role:"model",parts});
-      const toolResultParts=[];
-      for(const part of toolCalls){
-        const fn=part.functionCall;
-        toolCallCount++;
-        saLog(specialistKey,`Called ${fn.name}`,'→ '+JSON.stringify(fn.args).substring(0,40));
-        const r=executeTool(fn.name,fn.args);
-        saLog(specialistKey,'Got: '+r.substring(0,70));
-        toolResultParts.push({functionResponse:{name:fn.name,response:{result:r}}});
+      if(txts.length)addStep('r','Thinking: "'+txts.map(function(p){return p.text;}).join(' ').substring(0,120)+'"');
+      contents.push({role:'model',parts:parts});
+      const trp=[];
+      for(let j=0;j<tcs.length;j++){
+        const fn=tcs[j].functionCall;total++;
+        const isMem=fn.name==='save_memory';
+        addStep(isMem?'m':'d',(isMem?'Saving memory: ':'Calling: ')+'<strong>'+fn.name+'</strong>',JSON.stringify(fn.args));
+        const r=runTool(fn.name,fn.args);
+        addStep(isMem?'m':'o',isMem?r:'Observed: '+r);
+        trp.push({functionResponse:{name:fn.name,response:{result:r}}});
       }
-      contents.push({role:"user",parts:toolResultParts});
+      contents.push({role:'user',parts:trp});
+      addStep('r','Reasoning...','looping back to model');
     }
-  }catch(e){
-    saLog(specialistKey,'Error: '+e.message);
-  }
-
-  saStatus(specialistKey,`done (${toolCallCount} calls)`,'var(--observe)');
-  return {specialist:specialistKey, name:spec.name, result, toolCallCount};
+  }catch(e){addStep('d','Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Ask';
 }
 
+// ── Multi-agent ───────────────────────────────────────────────────
 async function runMultiAgent(){
-  const q=document.getElementById("q").value.trim();
-  if(!q) return;
-
-  const btn=document.getElementById("ask-btn");
-  btn.disabled=true; btn.textContent="Running…";
-
-  document.getElementById("log").innerHTML="";
-  document.getElementById("trace-card").style.display="block";
-  document.getElementById("answer-card").style.display="none";
-  document.getElementById("stats-row").innerHTML="";
-  iterationCount=1;
-  updateIterCount();
-  resetSubAgents();
-
-  const startTime=Date.now();
-  addStep("decide","Orchestrator: analysing goal and assigning specialists…","→ dispatching Weather, Finance, Time agents in parallel");
+  const q=document.getElementById('q').value.trim();
+  if(!q)return;
+  const btn=document.getElementById('ask-btn');
+  btn.disabled=true;btn.textContent='Running...';
+  document.getElementById('log').innerHTML='';
+  document.getElementById('trace-card').style.display='block';
+  document.getElementById('ans-card').style.display='none';
+  iters=1;updateIters();
+  resetSA();
+  const t0=Date.now();
 
   try{
-    // Step 1 — orchestrator decomposes the goal
-    const orchRes=await fetch(WORKER_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        system_instruction:{parts:[{text:'You are an orchestrator AI. Break the user's query into exactly 3 sub-tasks, one for each specialist. Reply ONLY with valid JSON in this exact format with no markdown:
-{"weather":"<weather sub-task>","finance":"<finance sub-task>","time":"<time sub-task>"}
-If a specialist is not needed, write "none" as its value.'}]},
-        contents:[{role:"user",parts:[{text:q}]}],
-        generationConfig:{temperature:0.1}
-      })
-    });
+    addStep('d','Orchestrator: analysing goal and assigning specialists...','dispatching Weather, Finance, Time agents in parallel');
 
+    // Decompose
+    const orchRes=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:'You are an orchestrator. Break the query into 3 sub-tasks. Reply ONLY with valid JSON, no markdown:\n{"weather":"<task or none>","finance":"<task or none>","time":"<task or none>"}'}]},contents:[{role:'user',parts:[{text:q}]}],generationConfig:{temperature:0.1}})});
     const orchData=await orchRes.json();
-    if(orchData.error){addStep("decide","Orchestrator error: "+orchData.error.message,null);btn.disabled=false;btn.textContent="Ask";return;}
+    if(orchData.error){addStep('d','Orchestrator error: '+orchData.error.message);btn.disabled=false;btn.textContent='Ask';return;}
 
-    let tasks={weather:"none",finance:"none",time:"none"};
+    let tasks={weather:q,finance:q,time:q};
     try{
-      const raw=orchData.candidates?.[0]?.content?.parts?.[0]?.text||"{}";
-      const clean=raw.replace(/```json|```/g,"").trim();
-      tasks={...tasks,...JSON.parse(clean)};
-    }catch(e){
-      // fallback — give each specialist the full query
-      tasks={weather:q,finance:q,time:q};
-    }
+      const raw=orchData.candidates[0].content.parts[0].text||'{}';
+      const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+      if(parsed.weather)tasks.weather=parsed.weather;
+      if(parsed.finance)tasks.finance=parsed.finance;
+      if(parsed.time)tasks.time=parsed.time;
+    }catch(e){}
 
-    addStep("observe",`Tasks assigned: weather="${tasks.weather.substring(0,40)}…"`,null);
-    addStep("reason","Dispatching all specialists simultaneously…","→ Promise.all() — parallel execution");
+    addStep('o','Tasks assigned to specialists',JSON.stringify(tasks).substring(0,100));
+    addStep('r','Dispatching all 3 specialists simultaneously...','Promise.all - parallel execution');
 
-    // Step 2 — run all active specialists in parallel
-    const activeSpecs=Object.entries(tasks).filter(([,v])=>v!=="none");
-    const promises=activeSpecs.map(([key,task])=>runSpecialist(key,task));
-    const results=await Promise.all(promises);
+    // Run in parallel
+    const active=Object.entries(tasks).filter(function(e){return e[1]!=='none';});
+    const results=await Promise.all(active.map(function(e){return runSpecialist(e[0],e[1]);}));
 
-    const elapsed1=((Date.now()-startTime)/1000).toFixed(1);
-    addStep("act",`All ${results.length} specialists completed in ${elapsed1}s`,"→ handing results to orchestrator for synthesis");
+    const t1=((Date.now()-t0)/1000).toFixed(1);
+    addStep('a','All '+results.length+' specialists done in '+t1+'s','handing to orchestrator for synthesis');
 
-    // Step 3 — orchestrator synthesises
-    const synthesis=results.map(r=>`${r.name} result: ${r.result}`).join("
+    // Synthesise
+    const synthesis=results.map(function(r){return r.key+' agent result: '+r.result;}).join('\n\n');
+    const synRes=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:'You are a synthesis orchestrator. Combine these specialist results into a clear, well-structured final answer. Be warm and practical.'}]},contents:[{role:'user',parts:[{text:'Original query: '+q+'\n\nSpecialist results:\n'+synthesis+'\n\nSynthesise into a complete answer.'}]}],generationConfig:{temperature:0.3}})});
+    const synData=await synRes.json();
+    if(synData.error){addStep('d','Synthesis error: '+synData.error.message);btn.disabled=false;btn.textContent='Ask';return;}
 
-");
-    const synthRes=await fetch(WORKER_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        system_instruction:{parts:[{text:"You are a synthesis orchestrator. Combine the specialist results below into a clear, well-structured final answer for the user. Be warm and practical."}]},
-        contents:[
-          {role:"user",parts:[{text:`Original query: ${q}
+    const final=synData.candidates[0].content.parts.filter(function(p){return p.text;}).map(function(p){return p.text;}).join('\n');
+    const totalCalls=results.reduce(function(s,r){return s+r.calls;},0);
+    const elapsed=((Date.now()-t0)/1000).toFixed(1);
+    addStep('r','Orchestrator synthesis complete','all specialist results combined');
+    document.getElementById('ans-card').style.display='block';
+    document.getElementById('ans').textContent=final;
+    document.getElementById('stats').innerHTML='<div class="stat">specialists <span>'+results.length+'</span></div><div class="stat">tool calls <span>'+totalCalls+'</span></div><div class="stat">time <span>'+elapsed+'s</span></div><div class="stat">stage <span>4</span></div>';
 
-Specialist results:
-${synthesis}
-
-Please synthesise these into a complete answer.`}]}
-        ],
-        generationConfig:{temperature:0.3}
-      })
-    });
-
-    const synthData=await synthRes.json();
-    if(synthData.error){addStep("decide","Synthesis error: "+synthData.error.message,null);btn.disabled=false;btn.textContent="Ask";return;}
-
-    const finalText=synthData.candidates?.[0]?.content?.parts?.filter(p=>p.text).map(p=>p.text).join("
-")||"No synthesis result";
-    const totalCalls=results.reduce((s,r)=>s+r.toolCallCount,0);
-    const elapsed=((Date.now()-startTime)/1000).toFixed(1);
-
-    addStep("reason","Orchestrator synthesis complete","→ all specialist results combined");
-    document.getElementById("answer-card").style.display="block";
-    document.getElementById("answer").textContent=finalText;
-    document.getElementById("stats-row").innerHTML=
-      `<div class="stat">specialists <span>${results.length}</span></div>`+
-      `<div class="stat">tool calls <span>${totalCalls}</span></div>`+
-      `<div class="stat">time <span>${elapsed}s</span></div>`+
-      `<div class="stat">stage <span>4</span></div>`;
-
-  }catch(e){
-    addStep("decide","Error: "+e.message,null);
-  }
-
-  btn.disabled=false;
-  btn.textContent="Ask";
+  }catch(e){addStep('d','Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Ask';
 }
+
+document.getElementById('q').addEventListener('keydown',function(e){if(e.key==='Enter')runAgent();});
 </script>
 </body>
 </html>
