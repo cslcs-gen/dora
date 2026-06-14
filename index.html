@@ -284,7 +284,7 @@ function buildMemoryPrompt(){
 // ── Stage config ─────────────────────────────────────────────────
 const STAGE_CONFIG = {
   1: {
-    explainerHTML: '<strong style="color:var(--decide)">Stage 1 — Single tool use.</strong> The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.',
+    explainerHTML: `<strong style="color:var(--decide)">Stage 1 &mdash; Single tool use.</strong> The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.`,
     placeholder: 'e.g. What is the weather in Singapore?',
     chips: [
       ['What is the weather in Tokyo?','Tokyo weather'],
@@ -299,7 +299,7 @@ const STAGE_CONFIG = {
     footer: 'Stage 1 of 4'
   },
   2: {
-    explainerHTML: '<strong style="color:var(--observe)">Stage 2 — ReAct loop.</strong> The agent reasons and acts in multiple rounds. It can call several tools in sequence, thinking between each one, until the goal is fully complete. Watch the iteration counter climb.',
+    explainerHTML: `<strong style="color:var(--observe)">Stage 2 &mdash; ReAct loop.</strong> The agent reasons and acts in multiple rounds. It can call several tools in sequence, thinking between each one, until the goal is fully complete. Watch the iteration counter climb.`,
     placeholder: 'e.g. Singapore weather, time and currency rate compare with Malaysia',
     chips: [
       ['What is the weather in KL right now, what time is it there, and how much is 300 SGD in MYR?','KL: weather + time + currency'],
@@ -313,7 +313,7 @@ const STAGE_CONFIG = {
     footer: 'Stage 2 of 4'
   },
   3: {
-    explainerHTML: '<strong style="color:var(--reason)">Stage 3 — Memory.</strong> The agent remembers facts across sessions using localStorage. Key details are saved after each run and injected into the next conversation. Watch the memory panel build up — then refresh the page and ask again.',
+    explainerHTML: `<strong style="color:var(--reason)">Stage 3 &mdash; Memory.</strong> The agent remembers facts across sessions using localStorage. Key details are saved after each run and injected into the next conversation. Watch the memory panel build up &mdash; then refresh the page and ask again.`,
     placeholder: 'e.g. My name is CS and I am based in Singapore. What is the weather here?',
     chips: [
       ['My name is CS and I am based in Singapore. What is the weather here?','Introduce yourself'],
@@ -330,11 +330,11 @@ const STAGE_CONFIG = {
 
 // ── Stage switcher ───────────────────────────────────────────────
 function switchStage(n) {
+  try {
   const cfg = STAGE_CONFIG[n];
   if(!cfg) return;
   currentStage = n;
 
-  // Update tab active states by ID — no index math
   [1,2,3].forEach(i => {
     const t = document.getElementById('tab-'+i);
     if(t) t.classList.toggle('active', i===n);
@@ -357,6 +357,7 @@ function switchStage(n) {
   chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick='setQ(${JSON.stringify(q)})'>${l}</span>`).join('');
 
   if(n===3) renderMemory();
+  } catch(e) { alert('switchStage error: '+e.message); }
 }
 
 // ── Tool definitions ─────────────────────────────────────────────
