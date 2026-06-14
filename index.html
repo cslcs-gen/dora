@@ -55,6 +55,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .explainer{background:var(--surface2);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#b8b4ae;line-height:1.6;border-left:3px solid}
 .explainer.s1{border-color:var(--decide)}
 .explainer.s2{border-color:var(--observe)}
+.explainer.s3{border-color:var(--reason)}
 
 /* panel */
 .panel{max-width:680px;margin:0 auto;padding:0 1rem 4rem}
@@ -102,7 +103,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .stat{background:var(--surface2);border-radius:8px;padding:6px 12px;font-size:12px;font-family:var(--font-mono);color:var(--muted)}
 .stat span{color:var(--text)}
 
-/* footer */
+/* memory panel */
+.memory-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:12px}
+.memory-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.memory-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--reason);font-weight:500;display:flex;align-items:center;gap:6px}
+.memory-dot{width:7px;height:7px;border-radius:50%;background:var(--reason)}
+.memory-clear{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font-mono);padding:0;transition:color .2s}
+.memory-clear:hover{color:var(--act)}
+.memory-empty{font-size:13px;color:var(--muted);font-style:italic}
+.memory-list{display:flex;flex-direction:column;gap:6px}
+.memory-item{display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:var(--surface2);border-radius:8px;border-left:2px solid var(--reason)}
+.memory-key{font-size:11px;color:var(--reason);font-family:var(--font-mono);flex-shrink:0;margin-top:1px}
+.memory-val{font-size:13px;color:#d0cdc8;line-height:1.4}
+.memory-time{font-size:10px;color:var(--muted);font-family:var(--font-mono);margin-top:2px}
+.memory-injected{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:8px;padding:6px 10px;background:rgba(160,142,201,.06);border-radius:6px;border:1px dashed rgba(160,142,201,.2)}
 .footer{text-align:center;font-size:12px;color:var(--muted);padding:2rem;border-top:1px solid var(--border)}
 .footer em{color:var(--accent);font-style:normal}
 
@@ -155,7 +169,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
   <div class="stage-tabs">
     <button class="stage-tab active" id="tab-1" onclick="switchStage(1)">Stage 1 · Single tool</button>
     <button class="stage-tab" id="tab-2" onclick="switchStage(2)">Stage 2 · ReAct loop</button>
-    <button class="stage-tab locked" title="Coming soon">Stage 3 · Memory</button>
+    <button class="stage-tab" id="tab-3" onclick="switchStage(3)">Stage 3 · Memory</button>
     <button class="stage-tab locked" title="Coming soon">Stage 4 · Multi-agent</button>
   </div>
 </div>
@@ -166,6 +180,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
   <div class="explainer s1" id="explainer">
     <strong style="color:var(--decide)">Stage 1 — Single tool use.</strong>
     The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.
+  </div>
+
+  <!-- Memory panel (Stage 3 only) -->
+  <div class="memory-panel" id="memory-panel" style="display:none">
+    <div class="memory-header">
+      <div class="memory-title"><div class="memory-dot pulse"></div>Agent memory</div>
+      <button class="memory-clear" onclick="clearMemory()">clear all</button>
+    </div>
+    <div id="memory-body"><div class="memory-empty">No memories yet. Ask something — the agent will remember key facts.</div></div>
+    <div class="memory-injected" id="memory-injected" style="display:none"></div>
   </div>
 
   <!-- Ask card -->
@@ -211,10 +235,55 @@ const WORKER_URL = 'https://dora.cslcs-gen.workers.dev';
 let currentStage = 1;
 let iterationCount = 0;
 
-// ── Stage switcher ──────────────────────────────────────────────
+// ── Memory (localStorage) ────────────────────────────────────────
+const MEM_KEY = 'dora_memory_v1';
+
+function loadMemory(){
+  try{ return JSON.parse(localStorage.getItem(MEM_KEY)||'[]'); }
+  catch(e){ return []; }
+}
+
+function saveMemoryItem(key, value){
+  const mems = loadMemory();
+  const existing = mems.findIndex(m=>m.key===key);
+  const item = {key, value, time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})};
+  if(existing>=0) mems[existing]=item;
+  else mems.push(item);
+  localStorage.setItem(MEM_KEY, JSON.stringify(mems.slice(-20)));
+  renderMemory();
+}
+
+function clearMemory(){
+  localStorage.removeItem(MEM_KEY);
+  renderMemory();
+}
+
+function renderMemory(){
+  const mems = loadMemory();
+  const body = document.getElementById('memory-body');
+  const injEl = document.getElementById('memory-injected');
+  if(!body) return;
+  if(!mems.length){
+    body.innerHTML = '<div class="memory-empty">No memories yet. Ask something — the agent will remember key facts.</div>';
+    injEl.style.display='none';
+    return;
+  }
+  body.innerHTML = '<div class="memory-list">'+mems.map(m=>
+    `<div class="memory-item"><div class="memory-key">⬡</div><div><div class="memory-val">${m.value}</div><div class="memory-time">${m.key} · saved ${m.time}</div></div></div>`
+  ).join('')+'</div>';
+  injEl.style.display='block';
+  injEl.textContent = '→ injected into next system prompt: "'+mems.map(m=>m.value).join('. ')+'"';
+}
+
+function buildMemoryPrompt(){
+  const mems = loadMemory();
+  if(!mems.length) return '';
+  return '\n\nWhat you remember about the user:\n' + mems.map(m=>`- ${m.value}`).join('\n');
+}
+
+// ── Stage config ─────────────────────────────────────────────────
 const STAGE_CONFIG = {
   1: {
-    explainerClass: 's1',
     explainerHTML: '<strong style="color:var(--decide)">Stage 1 — Single tool use.</strong> The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.',
     placeholder: 'e.g. What is the weather in Singapore?',
     chips: [
@@ -226,12 +295,12 @@ const STAGE_CONFIG = {
     ],
     systemPrompt: 'You are a helpful AI agent with weather, calculator, and time tools. Use ONE tool per response — pick the most relevant one. After getting the tool result, give a friendly final answer.',
     tools: ['get_weather','calculate','get_time'],
+    maxIter: 3,
     footer: 'Stage 1 of 4'
   },
   2: {
-    explainerClass: 's2',
     explainerHTML: '<strong style="color:var(--observe)">Stage 2 — ReAct loop.</strong> The agent reasons and acts in multiple rounds. It can call several tools in sequence, thinking between each one, until the goal is fully complete. Watch the iteration counter climb.',
-    placeholder: 'e.g. Plan a day trip from Singapore to KL — check weather, convert 200 SGD to MYR, and work out arrival time if I leave at 9am (4.5hr journey)',
+    placeholder: 'e.g. Singapore weather, time and currency rate compare with Malaysia',
     chips: [
       ['What is the weather in KL right now, what time is it there, and how much is 300 SGD in MYR?','KL: weather + time + currency'],
       ['Check the weather in Tokyo and tell me what time it is there right now','Tokyo weather + time'],
@@ -240,10 +309,26 @@ const STAGE_CONFIG = {
     ],
     systemPrompt: 'You are a data-fetching AI agent. You MUST use tools to answer every question — never answer from memory or general knowledge. For multi-part questions, call tools one at a time in sequence: call a tool, get the result, then call the next tool. Keep looping until you have fetched ALL the data needed. Only give a final answer after all tool calls are complete. Available tools: get_weather (weather for any city), get_time (current time in any city), calculate (any math or arithmetic), get_exchange_rate (currency conversion between SGD, MYR, USD, JPY, EUR, GBP, AUD).',
     tools: ['get_weather','calculate','get_time','get_exchange_rate'],
+    maxIter: 8,
     footer: 'Stage 2 of 4'
+  },
+  3: {
+    explainerHTML: '<strong style="color:var(--reason)">Stage 3 — Memory.</strong> The agent remembers facts across sessions using localStorage. Key details are saved after each run and injected into the next conversation. Watch the memory panel build up — then refresh the page and ask again.',
+    placeholder: 'e.g. My name is CS and I am based in Singapore. What is the weather here?',
+    chips: [
+      ['My name is CS and I am based in Singapore. What is the weather here?','Introduce yourself'],
+      ['I usually travel to KL for work. What is the weather and time there now?','Set travel context'],
+      ['What do you remember about me?','Test memory recall'],
+      ['Check the weather in my home city','Use remembered home city']
+    ],
+    systemPrompt: 'You are a helpful AI agent with memory. You MUST use tools to fetch any real data — never guess. You also have a save_memory tool — use it to remember important facts about the user such as their name, home city, travel destinations, or preferences. Save one fact at a time with a short key. After saving memories and fetching any needed data, give a warm personalised answer that references what you know about the user.',
+    tools: ['get_weather','calculate','get_time','get_exchange_rate','save_memory'],
+    maxIter: 10,
+    footer: 'Stage 3 of 4'
   }
 };
 
+// ── Stage switcher ───────────────────────────────────────────────
 function switchStage(n) {
   if(n === currentStage) return;
   const cfg = STAGE_CONFIG[n];
@@ -253,23 +338,26 @@ function switchStage(n) {
   document.querySelectorAll('.stage-tab:not(.locked)').forEach((t,i) => t.classList.toggle('active', i+1===n));
 
   const ex = document.getElementById('explainer');
-  ex.className = 'explainer ' + cfg.explainerClass;
+  ex.className = 'explainer s'+n;
   ex.innerHTML = cfg.explainerHTML;
 
   document.getElementById('q').placeholder = cfg.placeholder;
   document.getElementById('footer-stage').textContent = cfg.footer;
+  document.getElementById('memory-panel').style.display = n===3 ? 'block' : 'none';
 
   const chipsEl = document.getElementById('chips');
-  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick="setQ('${q.replace(/'/g,"\\'")}'">${l}</span>`).join('');
+  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick="setQ('${q.replace(/'/g,"\'")}')">${l}</span>`).join('');
 
   document.getElementById('trace-card').style.display = 'none';
   document.getElementById('answer-card').style.display = 'none';
   document.getElementById('log').innerHTML = '';
   document.getElementById('q').value = '';
   iterationCount = 0;
+
+  if(n===3) renderMemory();
 }
 
-// ── Tools ───────────────────────────────────────────────────────
+// ── Tool definitions ─────────────────────────────────────────────
 const TOOLS_DEFS = {
   get_weather: {
     name:"get_weather",
@@ -278,8 +366,8 @@ const TOOLS_DEFS = {
   },
   calculate: {
     name:"calculate",
-    description:"Evaluate any mathematical expression, unit conversion, or arithmetic. Supports +, -, *, /, parentheses.",
-    parameters:{type:"object",properties:{expression:{type:"string",description:"Math expression e.g. 9 + 4.5, 200 * 3.51"}},required:["expression"]}
+    description:"Evaluate any mathematical expression, unit conversion, or arithmetic.",
+    parameters:{type:"object",properties:{expression:{type:"string"}},required:["expression"]}
   },
   get_time: {
     name:"get_time",
@@ -289,7 +377,12 @@ const TOOLS_DEFS = {
   get_exchange_rate: {
     name:"get_exchange_rate",
     description:"Get the current exchange rate between two currencies and optionally convert an amount.",
-    parameters:{type:"object",properties:{from:{type:"string",description:"Source currency code e.g. SGD"},to:{type:"string",description:"Target currency code e.g. MYR"},amount:{type:"number",description:"Amount to convert (optional)"}},required:["from","to"]}
+    parameters:{type:"object",properties:{from:{type:"string"},to:{type:"string"},amount:{type:"number"}},required:["from","to"]}
+  },
+  save_memory: {
+    name:"save_memory",
+    description:"Save an important fact about the user to long-term memory. Use a short descriptive key and a clear value. Examples: key=home_city value=Singapore, key=name value=CS, key=travel_destination value=Kuala Lumpur.",
+    parameters:{type:"object",properties:{key:{type:"string",description:"Short identifier e.g. home_city, name, preference"},value:{type:"string",description:"The fact to remember"}},required:["key","value"]}
   }
 };
 
@@ -302,7 +395,6 @@ const WEATHER = {
   paris:{temp:17,feels:15,condition:"Light rain",humidity:78,wind:16},
   "kuala lumpur":{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
   kl:{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
-  "kl ":{temp:32,feels:38,condition:"Partly cloudy with showers",humidity:82,wind:9},
   bangkok:{temp:33,feels:38,condition:"Thunderstorm",humidity:88,wind:6},
   "new york":{temp:22,feels:21,condition:"Partly sunny",humidity:58,wind:20},
   berlin:{temp:13,feels:11,condition:"Cloudy",humidity:70,wind:22},
@@ -324,16 +416,20 @@ const RATES = {
 };
 
 function executeTool(name, args) {
-  if(name === "get_weather") {
-    const key = (args.city||"").toLowerCase().trim().replace(/\bkuala lumpur\b/,"kl");
-    const d = WEATHER[key] || WEATHER[(args.city||"").toLowerCase().trim()] || {temp:26,feels:24,condition:"Partly cloudy",humidity:65,wind:10};
-    let t=d.temp, f=d.feels;
-    const isFahr = args.units==="fahrenheit";
+  if(name === "save_memory"){
+    saveMemoryItem(args.key, args.value);
+    return `Memory saved: "${args.key}" = "${args.value}"`;
+  }
+  if(name === "get_weather"){
+    const key=(args.city||"").toLowerCase().trim().replace(/kuala lumpur/,"kl");
+    const d=WEATHER[key]||WEATHER[(args.city||"").toLowerCase().trim()]||{temp:26,feels:24,condition:"Partly cloudy",humidity:65,wind:10};
+    let t=d.temp,f=d.feels;
+    const isFahr=args.units==="fahrenheit";
     if(isFahr){t=Math.round(t*9/5+32);f=Math.round(f*9/5+32);}
     const u=isFahr?"°F":"°C";
     return `Weather in ${args.city}: ${t}${u} (feels like ${f}${u}), ${d.condition}. Humidity ${d.humidity}%, wind ${d.wind} km/h.`;
   }
-  if(name === "calculate") {
+  if(name === "calculate"){
     try{
       const safe=(args.expression||"").replace(/[^0-9+\-*/().\s]/g,"");
       const r=Function('"use strict";return('+safe+')')();
@@ -341,7 +437,7 @@ function executeTool(name, args) {
       return `${args.expression} = ${rounded.toLocaleString()}`;
     }catch(e){ return "Could not evaluate: "+args.expression; }
   }
-  if(name === "get_time") {
+  if(name === "get_time"){
     const key=(args.city||"").toLowerCase().replace(/\s+/g,"").replace("kualalumpur","kl");
     const tz=CITY_TZ[key]||CITY_TZ[(args.city||"").toLowerCase()]||"UTC";
     try{
@@ -350,24 +446,21 @@ function executeTool(name, args) {
       return `Current time in ${args.city}: ${time} — ${date}. (${tz})`;
     }catch(e){ return "Could not get time for "+args.city; }
   }
-  if(name === "get_exchange_rate") {
+  if(name === "get_exchange_rate"){
     const key=`${(args.from||"").toUpperCase()}-${(args.to||"").toUpperCase()}`;
     const rate=RATES[key];
     if(!rate) return `Exchange rate for ${key} not available.`;
-    if(args.amount){
-      const converted=(args.amount*rate).toFixed(2);
-      return `${args.amount} ${args.from} = ${converted} ${args.to} (rate: 1 ${args.from} = ${rate} ${args.to})`;
-    }
+    if(args.amount){ const c=(args.amount*rate).toFixed(2); return `${args.amount} ${args.from} = ${c} ${args.to} (rate: 1 ${args.from} = ${rate} ${args.to})`; }
     return `Exchange rate: 1 ${args.from} = ${rate} ${args.to}`;
   }
   return "Unknown tool: "+name;
 }
 
-// ── UI helpers ──────────────────────────────────────────────────
+// ── UI helpers ───────────────────────────────────────────────────
 function setQ(t){ document.getElementById('q').value=t; }
 
-function addStep(phase, title, meta) {
-  const cfg={decide:{cls:"si-decide",icon:"D"},observe:{cls:"si-observe",icon:"O"},reason:{cls:"si-reason",icon:"R"},act:{cls:"si-act",icon:"A"}};
+function addStep(phase, title, meta){
+  const cfg={decide:{cls:"si-decide",icon:"D"},observe:{cls:"si-observe",icon:"O"},reason:{cls:"si-reason",icon:"R"},act:{cls:"si-act",icon:"A"},memory:{cls:"si-reason",icon:"M"}};
   const c=cfg[phase]||cfg.decide;
   const el=document.createElement("div");
   el.className="step fade-in";
@@ -375,20 +468,20 @@ function addStep(phase, title, meta) {
   document.getElementById("log").appendChild(el);
 }
 
-function addLoopSep(n) {
+function addLoopSep(n){
   const el=document.createElement("div");
   el.className="loop-sep fade-in";
   el.innerHTML=`<div class="loop-line"></div><div class="loop-label">loop ${n}</div><div class="loop-line"></div>`;
   document.getElementById("log").appendChild(el);
 }
 
-function updateIterCount() {
+function updateIterCount(){
   const el=document.getElementById("iter-count");
   if(el) el.textContent=`${iterationCount} iteration${iterationCount!==1?"s":""}`;
 }
 
-// ── Agent loop ──────────────────────────────────────────────────
-async function runAgent() {
+// ── Agent loop ───────────────────────────────────────────────────
+async function runAgent(){
   const q=document.getElementById("q").value.trim();
   if(!q) return;
 
@@ -405,6 +498,17 @@ async function runAgent() {
   const cfg=STAGE_CONFIG[currentStage];
   const toolDefs=cfg.tools.map(t=>TOOLS_DEFS[t]);
 
+  // Build system prompt — inject memory for Stage 3
+  let systemPrompt=cfg.systemPrompt;
+  if(currentStage===3){
+    const memPrompt=buildMemoryPrompt();
+    systemPrompt='You are a helpful AI agent with memory. You MUST use tools to fetch any real data. Use save_memory to remember important facts about the user (name, home city, travel destinations, preferences). Save one fact at a time. Give warm personalised answers referencing what you know.'+ memPrompt;
+    if(memPrompt){
+      addStep("memory","Memory loaded — injecting context into prompt", memPrompt.replace(/
+/g,' ').substring(0,120));
+    }
+  }
+
   addStep("decide","Deciding which tool to use…","→ sending question + tool definitions to Gemini via Worker");
 
   const contents=[{role:"user",parts:[{text:q}]}];
@@ -413,9 +517,7 @@ async function runAgent() {
 
   try{
     let iterations=0;
-    const maxIter=currentStage===1?3:8;
-
-    while(iterations<maxIter){
+    while(iterations<cfg.maxIter){
       iterations++;
       iterationCount=iterations;
       if(iterations>1) addLoopSep(iterations);
@@ -425,10 +527,10 @@ async function runAgent() {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-          system_instruction:{parts:[{text:cfg.systemPrompt}]},
+          system_instruction:{parts:[{text:systemPrompt}]},
           contents,
           tools:[{function_declarations:toolDefs}],
-          generationConfig:{temperature:0.1}
+          generationConfig:{temperature:0.2}
         })
       });
 
@@ -454,6 +556,7 @@ async function runAgent() {
           `<div class="stat">tool calls <span>${totalToolCalls}</span></div>`+
           `<div class="stat">time <span>${elapsed}s</span></div>`+
           `<div class="stat">stage <span>${currentStage}</span></div>`;
+        if(currentStage===3) renderMemory();
         break;
       }
 
@@ -467,9 +570,10 @@ async function runAgent() {
       for(const part of toolCalls){
         const fn=part.functionCall;
         totalToolCalls++;
-        addStep("decide",`Decided to call: <strong>${fn.name}</strong>`,JSON.stringify(fn.args));
+        const isMem=fn.name==="save_memory";
+        addStep(isMem?"memory":"decide", isMem?`Saving memory: <strong>${fn.args.key}</strong>`:`Decided to call: <strong>${fn.name}</strong>`, JSON.stringify(fn.args));
         const result=executeTool(fn.name,fn.args);
-        addStep("observe","Observed result: "+result,null);
+        addStep(isMem?"memory":"observe", isMem?result:"Observed result: "+result, null);
         toolResultParts.push({functionResponse:{name:fn.name,response:{result}}});
       }
 
