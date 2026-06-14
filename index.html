@@ -206,11 +206,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 
 <div class="panel">
 
-  <!-- Stage explainer -->
-  <div class="explainer s1" id="explainer">
-    <strong style="color:var(--decide)">Stage 1 — Single tool use.</strong>
-    The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.
-  </div>
+  <!-- Stage explainers — static HTML, never touched by JS innerHTML -->
+  <div class="explainer s1" id="ex-1" style="display:block"><strong style="color:var(--decide)">Stage 1 &mdash; Single tool use.</strong> The agent picks one tool, calls it once, observes the result, and answers. The loop always runs exactly twice.</div>
+  <div class="explainer s2" id="ex-2" style="display:none"><strong style="color:var(--observe)">Stage 2 &mdash; ReAct loop.</strong> The agent reasons and acts in multiple rounds, chaining tools in sequence until the goal is fully complete. Watch the iteration counter climb.</div>
+  <div class="explainer s3" id="ex-3" style="display:none"><strong style="color:var(--reason)">Stage 3 &mdash; Memory.</strong> The agent remembers facts across sessions via localStorage. Saved facts are injected into the next conversation automatically.</div>
+  <div class="explainer s4" id="ex-4" style="display:none"><strong style="color:var(--act)">Stage 4 &mdash; Multi-agent.</strong> One orchestrator delegates to specialist agents running in parallel. Each specialist handles one domain. Results are synthesised into a final answer.</div>
 
   <!-- Memory panel (Stage 3 only) -->
   <div class="memory-panel" id="memory-panel" style="display:none">
@@ -379,7 +379,6 @@ function buildMemoryPrompt(){
 // ── Stage config ─────────────────────────────────────────────────
 const STAGE_CONFIG = {
   1: {
-    explainerHTML: `<strong style="color:var(--decide)">Stage 1 &mdash; Single tool use.</strong> The agent receives your question, decides which tool to call, calls it once, observes the result, and gives a final answer. The loop always runs exactly twice.`,
     placeholder: 'e.g. What is the weather in Singapore?',
     chips: [
       ['What is the weather in Tokyo?','Tokyo weather'],
@@ -394,7 +393,6 @@ const STAGE_CONFIG = {
     footer: 'Stage 1 of 4'
   },
   2: {
-    explainerHTML: `<strong style="color:var(--observe)">Stage 2 &mdash; ReAct loop.</strong> The agent reasons and acts in multiple rounds. It can call several tools in sequence, thinking between each one, until the goal is fully complete. Watch the iteration counter climb.`,
     placeholder: 'e.g. Singapore weather, time and currency rate compare with Malaysia',
     chips: [
       ['What is the weather in KL right now, what time is it there, and how much is 300 SGD in MYR?','KL: weather + time + currency'],
@@ -408,7 +406,6 @@ const STAGE_CONFIG = {
     footer: 'Stage 2 of 4'
   },
   3: {
-    explainerHTML: `<strong style="color:var(--reason)">Stage 3 &mdash; Memory.</strong> The agent remembers facts across sessions using localStorage. Key details are saved after each run and injected into the next conversation. Watch the memory panel build up &mdash; then refresh the page and ask again.`,
     placeholder: 'e.g. My name is CS and I am based in Singapore. What is the weather here?',
     chips: [
       ['My name is CS and I am based in Singapore. What is the weather here?','Introduce yourself'],
@@ -422,7 +419,6 @@ const STAGE_CONFIG = {
     footer: 'Stage 3 of 4'
   },
   4: {
-    explainerHTML: `<strong style="color:var(--act)">Stage 4 &mdash; Multi-agent.</strong> One orchestrator breaks the goal into sub-tasks and dispatches specialist agents in parallel. Each specialist has its own tools and focus. Watch all three work simultaneously, then the orchestrator synthesises the final answer.`,
     placeholder: 'e.g. I am flying from Singapore to London tomorrow. Briefing please.',
     chips: [
       ['I am flying from Singapore to London tomorrow. Give me a full briefing — weather both cities, time difference, and how much spending money in GBP if I bring 500 SGD.','Travel briefing'],
@@ -437,38 +433,38 @@ const STAGE_CONFIG = {
   }
 };
 function switchStage(n) {
-  try {
   const cfg = STAGE_CONFIG[n];
   if(!cfg) return;
   currentStage = n;
 
+  // Tabs
   [1,2,3,4].forEach(i => {
     const t = document.getElementById('tab-'+i);
     if(t) t.classList.toggle('active', i===n);
   });
 
-  const ex = document.getElementById('explainer');
-  ex.className = 'explainer s'+n;
-  ex.innerHTML = cfg.explainerHTML;
+  // Explainers — just show/hide, no innerHTML
+  [1,2,3,4].forEach(i => {
+    const el = document.getElementById('ex-'+i);
+    if(el) el.style.display = i===n ? 'block' : 'none';
+  });
+
+  // Chips
+  const chipsEl = document.getElementById('chips');
+  chipsEl.innerHTML = cfg.chips.map(([q,l]) => '<span class="chip" onclick='setQ(' + JSON.stringify(q) + ')'>' + l + '</span>').join('');
 
   document.getElementById('q').placeholder = cfg.placeholder;
   document.getElementById('q').value = '';
   document.getElementById('footer-stage').textContent = cfg.footer;
   document.getElementById('memory-panel').style.display = n===3 ? 'block' : 'none';
   document.getElementById('sub-agents-wrap').style.display = n===4 ? 'block' : 'none';
-  if(n===4){ resetSubAgents(); }
-  document.getElementById('agents-panel').style.display = n===4 ? 'block' : 'none';
   document.getElementById('trace-card').style.display = 'none';
   document.getElementById('answer-card').style.display = 'none';
   document.getElementById('log').innerHTML = '';
   iterationCount = 0;
 
-  const chipsEl = document.getElementById('chips');
-  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick='setQ(${JSON.stringify(q)})'>${l}</span>`).join('');
-
   if(n===3) renderMemory();
-  if(n===4) resetAgentPanels();
-  } catch(e) { alert('switchStage error: '+e.message); }
+  if(n===4) resetSubAgents();
 }
 
 // ── Tool definitions ─────────────────────────────────────────────
