@@ -346,7 +346,7 @@ function switchStage(n) {
   document.getElementById('memory-panel').style.display = n===3 ? 'block' : 'none';
 
   const chipsEl = document.getElementById('chips');
-  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick="setQ('${q.replace(/'/g,"\'")}')">${l}</span>`).join('');
+  chipsEl.innerHTML = cfg.chips.map(([q,l]) => `<span class="chip" onclick='setQ(${JSON.stringify(q)})'>${l}</span>`).join('');
 
   document.getElementById('trace-card').style.display = 'none';
   document.getElementById('answer-card').style.display = 'none';
